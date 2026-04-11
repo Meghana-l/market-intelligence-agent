@@ -5,12 +5,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-# Install Python dependencies first for better build caching.
-COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
-
-# Copy backend application code.
 COPY . /app
+
+RUN pip install --no-cache-dir -r /app/requirements.txt
 
 EXPOSE 8000
 
