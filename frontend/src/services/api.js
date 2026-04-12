@@ -9,11 +9,6 @@ export async function getQuote(ticker) {
   return response.data
 }
 
-export async function getNews(ticker) {
-  const response = await api.get(`/api/stocks/news/${ticker}`)
-  return response.data
-}
-
 export async function askAria(question, ticker) {
   const response = await api.post('/api/query', {
     question,

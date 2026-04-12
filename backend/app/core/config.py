@@ -14,8 +14,6 @@ class Settings(BaseSettings):
     groq_model: str = "llama3-70b-8192"
 
     embedding_model_name: str = "sentence-transformers/all-MiniLM-L6-v2"
-    huggingface_api_key: str = ""
-    huggingface_inference_base_url: str = "https://api-inference.huggingface.co/models"
 
     pinecone_api_key: str = ""
     pinecone_environment: str = "us-east-1"

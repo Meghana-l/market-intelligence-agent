@@ -7,7 +7,7 @@ ARIA is a stock market intelligence web application with a FastAPI backend and R
 - **Backend**: Python + FastAPI
 - **Frontend**: React + Vite
 - **Agent Brain**: Groq API (`llama3-70b-8192`)
-- **Embeddings**: Hugging Face Inference API (`sentence-transformers/all-MiniLM-L6-v2`)
+- **Embeddings**: HuggingFace sentence-transformers (`all-MiniLM-L6-v2`)
 - **Vector Database**: Pinecone
 - **Retrieval**: Hybrid BM25 + vector similarity
 - **Reranking**: MMR (Maximal Marginal Relevance)
@@ -68,7 +68,7 @@ ARIA is a stock market intelligence web application with a FastAPI backend and R
 n8n orchestrates scheduled ingestion pipelines:
 - Pull market news, filings, transcripts, and macro datasets.
 - Normalize and chunk content.
-- Generate embeddings via Hugging Face Inference API (`all-MiniLM-L6-v2`).
+- Generate embeddings via local HuggingFace sentence-transformers.
 - Upsert vectors + metadata into Pinecone.
 
 ### 2) Real-Time Market Layer
@@ -78,7 +78,7 @@ FastAPI exposes market endpoints (`/api/stocks/quote/{ticker}` + SSE stream) bac
 ### 3) Retrieval Layer (RAG)
 
 Given a user question:
-1. Create query embedding via Hugging Face Inference API.
+1. Create query embedding with sentence-transformers.
 2. Run vector search in Pinecone with metadata filters.
 3. Run lexical BM25 scoring over candidate chunks.
 4. Fuse results and rerank with MMR for diversity + relevance.
@@ -129,9 +129,6 @@ Required API keys:
 - `PINECONE_API_KEY`
 - `FINNHUB_API_KEY`
 - `NEWS_API_KEY`
-
-Optional embedding auth key:
-- `HUGGINGFACE_API_KEY` (recommended to avoid stricter anonymous rate limits)
 
 If needed, you can also regenerate from the sample:
 ```bash
