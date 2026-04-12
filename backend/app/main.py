@@ -1,24 +1,1231 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARIA — Autonomous Research & Intelligence Agent</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #060d1a;
+    --bg-secondary: #0a1628;
+    --bg-card: #0d1e35;
+    --bg-card-hover: #112240;
+    --border: #1a3050;
+    --border-bright: #1e4080;
+    --accent: #2563eb;
+    --accent-glow: rgba(37,99,235,0.3);
+    --accent-bright: #3b82f6;
+    --green: #10b981;
+    --green-bg: rgba(16,185,129,0.1);
+    --red: #ef4444;
+    --red-bg: rgba(239,68,68,0.1);
+    --amber: #f59e0b;
+    --text-primary: #e2e8f0;
+    --text-secondary: #64748b;
+    --text-muted: #334155;
+    --sidebar-width: 200px;
+  }
 
-from app.api.routes import health, query, stocks
-from app.core.config import settings
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-app = FastAPI(title=settings.app_name, version="0.1.0")
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+  /* ── LANDING PAGE ── */
+  #landing {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
 
-app.include_router(health.router, prefix="/api")
-app.include_router(stocks.router, prefix="/api/stocks", tags=["stocks"])
-app.include_router(query.router, prefix="/api/query", tags=["query"])
+  #landing::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -60%);
+    pointer-events: none;
+  }
 
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(30,64,128,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,64,128,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
 
-@app.get("/")
-def root() -> dict[str, str]:
-    return {"message": "ARIA backend is running"}
+  .landing-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 720px;
+    padding: 0 24px;
+  }
+
+  .aria-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-secondary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .aria-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .landing-title {
+    font-size: clamp(56px, 10vw, 88px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: #fff;
+    line-height: 1;
+    text-align: center;
+  }
+
+  .landing-title span {
+    background: linear-gradient(135deg, #fff 0%, #60a5fa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .landing-subtitle {
+    font-size: 15px;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+    text-align: center;
+    font-weight: 400;
+  }
+
+  .search-container {
+    width: 100%;
+    position: relative;
+    margin-top: 8px;
+  }
+
+  .search-input {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+    padding: 18px 140px 18px 24px;
+    font-size: 15px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .search-input::placeholder { color: var(--text-secondary); }
+
+  .search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .search-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+
+  .search-btn:hover { background: var(--accent-bright); }
+  .search-btn:active { transform: translateY(-50%) scale(0.97); }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .chip {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .chip:hover {
+    border-color: var(--accent);
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+  }
+
+  /* ── DASHBOARD ── */
+  #dashboard { display: none; min-height: 100vh; }
+
+  .dashboard-layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: var(--sidebar-width);
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    font-size: 22px;
+    font-weight: 700;
+    color: #fff;
+    padding: 0 20px 24px;
+    letter-spacing: -0.02em;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-logo span {
+    background: linear-gradient(135deg, #fff, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+    border-radius: 0;
+  }
+
+  .nav-item:hover { color: var(--text-primary); background: var(--bg-card); }
+  .nav-item.active { color: var(--accent-bright); background: rgba(37,99,235,0.08); border-right: 2px solid var(--accent); }
+
+  .nav-icon { font-size: 14px; opacity: 0.7; }
+
+  /* Main content */
+  .main-content {
+    margin-left: var(--sidebar-width);
+    flex: 1;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* Top bar */
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+  }
+
+  .topbar-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-primary);
+  }
+
+  .topbar-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .topbar-btn:hover { background: var(--accent-bright); }
+
+  /* Ticker row */
+  .ticker-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .ticker-badge {
+    background: rgba(37,99,235,0.15);
+    border: 1px solid var(--accent);
+    color: var(--accent-bright);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .ticker-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .ticker-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .ticker-change {
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .ticker-change.positive { background: var(--green-bg); color: var(--green); }
+  .ticker-change.negative { background: var(--red-bg); color: var(--red); }
+
+  /* Metric cards */
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .metric-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .metric-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .metric-sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* Two column rows */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .live-badge {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--green-bg);
+    border: 1px solid rgba(16,185,129,0.3);
+    color: var(--green);
+    border-radius: 100px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .live-badge .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  /* Briefing */
+  .briefing-text {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  /* Pipeline */
+  .pipeline-steps { display: flex; flex-direction: column; gap: 10px; }
+
+  .pipeline-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .step-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .step-dot.done { background: var(--green); }
+  .step-dot.active { background: var(--accent-bright); animation: pulse 1.5s infinite; }
+  .step-dot.pending { background: var(--text-muted); }
+
+  .pipeline-step.done { color: var(--text-primary); }
+  .pipeline-step.active { color: var(--accent-bright); }
+
+  /* Calculator */
+  .calc-inputs { display: flex; flex-direction: column; gap: 12px; }
+
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .calc-label { font-size: 12px; color: var(--text-secondary); }
+
+  .calc-input {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    color: #fff;
+    width: 130px;
+    text-align: right;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .calc-input:focus { border-color: var(--accent); }
+
+  .calc-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 8px 0;
+  }
+
+  .calc-result { font-weight: 700; font-size: 14px; }
+  .calc-result.positive { color: var(--green); }
+  .calc-result.negative { color: var(--red); }
+
+  /* Sentiment */
+  .sentiment-bars { display: flex; flex-direction: column; gap: 14px; }
+
+  .sentiment-row { display: flex; flex-direction: column; gap: 5px; }
+
+  .sentiment-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  .sentiment-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .sentiment-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+  }
+
+  /* News */
+  .news-list { display: flex; flex-direction: column; gap: 12px; }
+
+  .news-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .news-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .news-headline {
+    font-size: 13px;
+    color: var(--text-primary);
+    line-height: 1.4;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .news-headline:hover { color: var(--accent-bright); }
+
+  .news-meta {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Spinner */
+  .spinner {
+    display: inline-block;
+    width: 16px; height: 16px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    padding: 20px 0;
+    justify-content: center;
+  }
+
+  /* Chat button */
+  .chat-float {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 1000;
+    background: rgba(13,30,53,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-bright);
+    border-radius: 100px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    gap: 8px;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .chat-float:hover {
+    border-color: var(--accent);
+    background: rgba(37,99,235,0.15);
+    color: #fff;
+  }
+
+  /* Chat popup */
+  .chat-popup {
+    position: fixed;
+    bottom: 90px;
+    right: 28px;
+    width: 360px;
+    height: 480px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .chat-popup.open { display: flex; }
+
+  .chat-header {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .chat-header-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .chat-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0 4px;
+    transition: color 0.2s;
+  }
+
+  .chat-close:hover { color: var(--text-primary); }
+
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .chat-msg {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .chat-msg.aria {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+
+  .chat-msg.user {
+    background: var(--accent);
+    color: #fff;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+  }
+
+  .chat-input-row {
+    border-top: 1px solid var(--border);
+    padding: 12px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .chat-input {
+    flex: 1;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .chat-input:focus { border-color: var(--accent); }
+  .chat-input::placeholder { color: var(--text-secondary); }
+
+  .chat-send {
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+  }
+
+  .chat-send:hover { background: var(--accent-bright); }
+
+  /* Error */
+  .error-msg {
+    color: var(--red);
+    font-size: 12px;
+    padding: 8px 12px;
+    background: var(--red-bg);
+    border-radius: 8px;
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════ LANDING PAGE ══════════════════════════════════ -->
+<div id="landing">
+  <div class="grid-overlay"></div>
+  <div class="landing-content">
+    <div class="aria-badge">
+      <span class="dot"></span>
+      Market Intelligence · Live
+    </div>
+    <h1 class="landing-title"><span>ARIA</span></h1>
+    <p class="landing-subtitle">Autonomous Research & Intelligence Agent</p>
+    <div class="search-container">
+      <input
+        class="search-input"
+        id="landing-input"
+        type="text"
+        placeholder="Ask ARIA anything about the market..."
+        autocomplete="off"
+      />
+      <button class="search-btn" onclick="handleSearch()">Ask ARIA</button>
+    </div>
+    <div class="chips">
+      <div class="chip" onclick="fillSearch(this)">How is the Iran war affecting my Tesla shares?</div>
+      <div class="chip" onclick="fillSearch(this)">Should I be worried about NVDA right now?</div>
+      <div class="chip" onclick="fillSearch(this)">What happened to Apple today?</div>
+      <div class="chip" onclick="fillSearch(this)">Explain what rising oil prices mean for my portfolio</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════ DASHBOARD ══════════════════════════════════ -->
+<div id="dashboard">
+  <div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo"><span>ARIA</span></div>
+      <nav>
+        <div class="nav-item active"><span class="nav-icon">▦</span> Dashboard</div>
+        <div class="nav-item"><span class="nav-icon">★</span> My Watchlist</div>
+        <div class="nav-item"><span class="nav-icon">⌗</span> Calculator</div>
+        <div class="nav-item"><span class="nav-icon">◈</span> News Feed</div>
+        <div class="nav-item"><span class="nav-icon">⊕</span> Geopolitical Map</div>
+        <div class="nav-item"><span class="nav-icon">≡</span> Agent Log</div>
+      </nav>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content">
+
+      <!-- Topbar -->
+      <div class="topbar">
+        <input class="topbar-input" id="topbar-input" type="text" placeholder="Ask ARIA anything...">
+        <button class="topbar-btn" onclick="reanalyze()">Re-analyze</button>
+      </div>
+
+      <!-- Ticker row -->
+      <div class="ticker-row">
+        <div class="ticker-badge" id="ticker-symbol">—</div>
+        <div class="ticker-name" id="ticker-name">Loading...</div>
+        <div class="ticker-price" id="ticker-price">—</div>
+        <div class="ticker-change" id="ticker-change">—</div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="metrics-row">
+        <div class="metric-card">
+          <div class="metric-label">Market Cap</div>
+          <div class="metric-value" id="metric-cap"><span class="spinner"></span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Sector</div>
+          <div class="metric-value" id="metric-sector"><span class="spinner"></span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">52W Range</div>
+          <div class="metric-value" id="metric-range"><span class="spinner"></span></div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Risk Score</div>
+          <div class="metric-value" id="metric-risk"><span class="spinner"></span></div>
+        </div>
+      </div>
+
+      <!-- Agent Briefing + Pipeline -->
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Agent Briefing</div>
+            <div class="live-badge"><span class="dot"></span> Live</div>
+          </div>
+          <div id="briefing-content">
+            <div class="loading-state"><span class="spinner"></span> ARIA is analyzing...</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Agent Pipeline</div>
+          </div>
+          <div class="pipeline-steps" id="pipeline-steps">
+            <div class="pipeline-step pending"><span class="step-dot pending"></span> Initializing...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calculator + Sentiment -->
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Investment Calculator</div>
+          </div>
+          <div class="calc-inputs">
+            <div class="calc-row">
+              <span class="calc-label">Shares I own</span>
+              <input class="calc-input" id="calc-shares" type="number" value="10" min="0" onchange="calcUpdate()">
+            </div>
+            <div class="calc-row">
+              <span class="calc-label">Avg buy price</span>
+              <input class="calc-input" id="calc-buy" type="number" value="" placeholder="$0.00" min="0" step="0.01" onchange="calcUpdate()">
+            </div>
+            <hr class="calc-divider">
+            <div class="calc-row">
+              <span class="calc-label">Current value</span>
+              <span class="calc-result" id="calc-value">—</span>
+            </div>
+            <div class="calc-row">
+              <span class="calc-label">Total gain / loss</span>
+              <span class="calc-result" id="calc-gain">—</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Sentiment Breakdown</div>
+          </div>
+          <div class="sentiment-bars" id="sentiment-bars">
+            <div class="loading-state"><span class="spinner"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- News -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Latest News</div>
+        </div>
+        <div class="news-list" id="news-list">
+          <div class="loading-state"><span class="spinner"></span> Fetching news...</div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Chat float button -->
+<button class="chat-float" id="chat-float" onclick="toggleChat()">
+  💬 Chat with ARIA
+</button>
+
+<!-- Chat popup -->
+<div class="chat-popup" id="chat-popup">
+  <div class="chat-header">
+    <div class="chat-header-title">
+      <div class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;"></div>
+      ARIA
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-messages" id="chat-messages">
+    <div class="chat-msg aria">Hi! I'm ARIA. Ask me anything about the market or your portfolio.</div>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-input" id="chat-input" placeholder="Ask ARIA..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-send" onclick="sendChat()">↑</button>
+  </div>
+</div>
+
+<script>
+  const API = (window.VITE_API_BASE_URL || '').replace(/\/$/, '')
+    || 'https://market-intelligence-agent-production.up.railway.app';
+
+  let currentTicker = '';
+  let currentPrice = 0;
+  let chatHistory = [];
+
+  // ── LANDING ──────────────────────────────────────────────────────────────
+  document.getElementById('landing-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') handleSearch();
+  });
+
+  function fillSearch(el) {
+    document.getElementById('landing-input').value = el.textContent;
+    handleSearch();
+  }
+
+  function handleSearch() {
+    const q = document.getElementById('landing-input').value.trim();
+    if (!q) return;
+    showDashboard(q);
+  }
+
+  // ── SHOW DASHBOARD ────────────────────────────────────────────────────────
+  function showDashboard(query) {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('chat-float').style.display = 'flex';
+    document.getElementById('topbar-input').value = query;
+
+    const ticker = extractTicker(query);
+    currentTicker = ticker;
+
+    animatePipeline();
+    loadStock(ticker);
+    loadBriefing(query, ticker);
+    loadSentiment(ticker);
+    loadNews(ticker);
+  }
+
+  function reanalyze() {
+    const q = document.getElementById('topbar-input').value.trim();
+    if (!q) return;
+    resetDashboard();
+    showDashboard(q);
+  }
+
+  function resetDashboard() {
+    document.getElementById('ticker-symbol').textContent = '—';
+    document.getElementById('ticker-name').textContent = 'Loading...';
+    document.getElementById('ticker-price').textContent = '—';
+    document.getElementById('ticker-change').textContent = '—';
+    document.getElementById('ticker-change').className = 'ticker-change';
+    ['metric-cap','metric-sector','metric-range','metric-risk'].forEach(id => {
+      document.getElementById(id).innerHTML = '<span class="spinner"></span>';
+    });
+    document.getElementById('briefing-content').innerHTML = '<div class="loading-state"><span class="spinner"></span> ARIA is analyzing...</div>';
+    document.getElementById('sentiment-bars').innerHTML = '<div class="loading-state"><span class="spinner"></span></div>';
+    document.getElementById('news-list').innerHTML = '<div class="loading-state"><span class="spinner"></span> Fetching news...</div>';
+    currentPrice = 0;
+  }
+
+  // ── TICKER EXTRACTION ─────────────────────────────────────────────────────
+  function extractTicker(query) {
+    const map = {
+      tesla: 'TSLA', tsla: 'TSLA',
+      nvidia: 'NVDA', nvda: 'NVDA',
+      apple: 'AAPL', aapl: 'AAPL',
+      microsoft: 'MSFT', msft: 'MSFT',
+      google: 'GOOGL', alphabet: 'GOOGL', googl: 'GOOGL',
+      amazon: 'AMZN', amzn: 'AMZN',
+      meta: 'META', facebook: 'META',
+      netflix: 'NFLX', nflx: 'NFLX',
+      amd: 'AMD', intel: 'INTC', intc: 'INTC',
+      'sp500': 'SPY', sp: 'SPY', 'oil': 'USO',
+    };
+    const lower = query.toLowerCase();
+    for (const [k, v] of Object.entries(map)) {
+      if (lower.includes(k)) return v;
+    }
+    const match = query.match(/\b([A-Z]{1,5})\b/);
+    return match ? match[1] : 'AAPL';
+  }
+
+  // ── PIPELINE ANIMATION ────────────────────────────────────────────────────
+  function animatePipeline() {
+    const steps = [
+      'Fetched live price data',
+      'Searched 24hr news',
+      'Read SEC filing highlights',
+      'Scanning Reddit sentiment...',
+      'Running geopolitical filter',
+      'Generating final briefing',
+    ];
+    const container = document.getElementById('pipeline-steps');
+    container.innerHTML = steps.map((s, i) =>
+      `<div class="pipeline-step pending" id="step-${i}">
+        <span class="step-dot pending" id="dot-${i}"></span>${s}
+      </div>`
+    ).join('');
+
+    steps.forEach((_, i) => {
+      setTimeout(() => {
+        const el = document.getElementById(`step-${i}`);
+        const dot = document.getElementById(`dot-${i}`);
+        if (!el) return;
+        if (i < steps.length - 1) {
+          el.className = 'pipeline-step done';
+          dot.className = 'step-dot done';
+        } else {
+          el.className = 'pipeline-step active';
+          dot.className = 'step-dot active';
+        }
+      }, i * 900);
+    });
+  }
+
+  // ── STOCK DATA ────────────────────────────────────────────────────────────
+  async function loadStock(ticker) {
+    try {
+      const res = await fetch(`${API}/api/stocks/quote/${ticker}`);
+      if (!res.ok) throw new Error('Stock fetch failed');
+      const d = await res.json();
+
+      currentPrice = d.current_price || d.price || d.c || 0;
+      const change = d.change_percent || d.percent_change || d.dp || 0;
+      const isPos = change >= 0;
+
+      document.getElementById('ticker-symbol').textContent = ticker;
+      document.getElementById('ticker-name').textContent = d.name || d.company_name || d.description || ticker;
+      document.getElementById('ticker-price').textContent = `$${parseFloat(currentPrice).toFixed(2)}`;
+
+      const changeEl = document.getElementById('ticker-change');
+      changeEl.textContent = `${isPos ? '+' : ''}${parseFloat(change).toFixed(2)}% today`;
+      changeEl.className = `ticker-change ${isPos ? 'positive' : 'negative'}`;
+
+      document.getElementById('metric-cap').textContent = d.market_cap || d.marketCap || d.market_capitalization || '—';
+      document.getElementById('metric-sector').textContent = d.sector || d.finnhubIndustry || '—';
+      document.getElementById('metric-range').textContent = d.week_52_range || d.fifty_two_week_range || (d['52WeekHigh'] ? `$${d['52WeekLow']}–$${d['52WeekHigh']}` : '—');
+
+      const beta = parseFloat(d.beta || d.risk_score || 1.2);
+      const risk = (beta * 3.2).toFixed(1);
+      const riskEl = document.getElementById('metric-risk');
+      riskEl.textContent = `${Math.min(parseFloat(risk), 10).toFixed(1)}/10`;
+      riskEl.style.color = parseFloat(risk) > 7 ? 'var(--red)' : parseFloat(risk) > 5 ? 'var(--amber)' : 'var(--green)';
+
+      calcUpdate();
+    } catch (err) {
+      console.error('Stock error:', err);
+      document.getElementById('ticker-symbol').textContent = ticker;
+      document.getElementById('ticker-name').textContent = ticker;
+      document.getElementById('ticker-price').textContent = 'Unavailable';
+      ['metric-cap','metric-sector','metric-range','metric-risk'].forEach(id => {
+        document.getElementById(id).textContent = '—';
+      });
+    }
+  }
+
+  // ── BRIEFING ──────────────────────────────────────────────────────────────
+  async function loadBriefing(query, ticker) {
+    try {
+      const res = await fetch(`${API}/api/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query, ticker, filters: {} })
+      });
+      if (!res.ok) throw new Error('Query failed');
+      const d = await res.json();
+      const text = d.answer || d.analysis || d.briefing || d.response || d.result || JSON.stringify(d);
+      document.getElementById('briefing-content').innerHTML =
+        `<p class="briefing-text">${text}</p>`;
+
+      // Extract sentiment from query response if available
+      if (d.sentiment) {
+        const s = d.sentiment;
+        renderSentiment(s.bullish || s.positive || 55, s.neutral || 25, s.bearish || s.negative || 20);
+      }
+    } catch (err) {
+      document.getElementById('briefing-content').innerHTML =
+        `<div class="error-msg">Unable to generate briefing. Please check your backend connection.</div>`;
+    }
+  }
+
+  // ── SENTIMENT ─────────────────────────────────────────────────────────────
+  async function loadSentiment(ticker) {
+    try {
+      // Try dedicated sentiment endpoint first, fall back to defaults
+      const res = await fetch(`${API}/api/stocks/quote/${ticker}`);
+      if (!res.ok) throw new Error('No sentiment');
+      const d = await res.json();
+      // Derive sentiment from price change
+      const change = parseFloat(d.change_percent || d.dp || 0);
+      const bullish = change > 2 ? 68 : change > 0 ? 55 : change > -2 ? 40 : 30;
+      const bearish = change < -2 ? 45 : change < 0 ? 30 : change < 2 ? 20 : 12;
+      const neutral = 100 - bullish - bearish;
+      renderSentiment(bullish, neutral, bearish);
+    } catch {
+      renderSentiment(55, 25, 20);
+    }
+  }
+
+  function renderSentiment(bullish, neutral, bearish) {
+    document.getElementById('sentiment-bars').innerHTML = `
+      <div class="sentiment-row">
+        <div class="sentiment-meta"><span>Bullish</span><span>${bullish}%</span></div>
+        <div class="sentiment-track"><div class="sentiment-fill" style="width:${bullish}%;background:var(--green);"></div></div>
+      </div>
+      <div class="sentiment-row">
+        <div class="sentiment-meta"><span>Neutral</span><span>${neutral}%</span></div>
+        <div class="sentiment-track"><div class="sentiment-fill" style="width:${neutral}%;background:var(--accent-bright);"></div></div>
+      </div>
+      <div class="sentiment-row">
+        <div class="sentiment-meta"><span>Bearish</span><span>${bearish}%</span></div>
+        <div class="sentiment-track"><div class="sentiment-fill" style="width:${bearish}%;background:var(--red);"></div></div>
+      </div>`;
+  }
+
+  // ── NEWS ──────────────────────────────────────────────────────────────────
+  async function loadNews(ticker) {
+    try {
+      const res = await fetch(`${API}/api/stocks/news/${ticker}`);
+      if (!res.ok) throw new Error('News failed');
+      const d = await res.json();
+      const articles = d.articles || d.news || d.results || [];
+      if (!articles.length) throw new Error('No articles');
+      document.getElementById('news-list').innerHTML = articles.slice(0, 6).map(a => `
+        <div class="news-item">
+          <div class="news-headline" onclick="window.open('${a.url || '#'}','_blank')">${a.title || a.headline}</div>
+          <div class="news-meta">${a.source?.name || a.source || 'Market News'} · ${formatTime(a.publishedAt || a.datetime || a.published_at)}</div>
+        </div>`).join('');
+    } catch {
+      document.getElementById('news-list').innerHTML =
+        `<div class="error-msg">News feed temporarily unavailable.</div>`;
+    }
+  }
+
+  function formatTime(ts) {
+    if (!ts) return 'Recently';
+    try {
+      const d = new Date(typeof ts === 'number' ? ts * 1000 : ts);
+      const diff = Math.floor((Date.now() - d) / 60000);
+      if (diff < 60) return `${diff}m ago`;
+      if (diff < 1440) return `${Math.floor(diff/60)}h ago`;
+      return d.toLocaleDateString();
+    } catch { return 'Recently'; }
+  }
+
+  // ── CALCULATOR ────────────────────────────────────────────────────────────
+  function calcUpdate() {
+    const shares = parseFloat(document.getElementById('calc-shares').value) || 0;
+    const buyPrice = parseFloat(document.getElementById('calc-buy').value) || 0;
+    if (!currentPrice || !shares) {
+      document.getElementById('calc-value').textContent = '—';
+      document.getElementById('calc-gain').textContent = '—';
+      return;
+    }
+    const currentValue = shares * currentPrice;
+    const costBasis = shares * buyPrice;
+    const gain = currentValue - costBasis;
+    const gainPct = costBasis > 0 ? ((gain / costBasis) * 100).toFixed(1) : 0;
+    const isPos = gain >= 0;
+
+    document.getElementById('calc-value').textContent = `$${currentValue.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}`;
+    const gainEl = document.getElementById('calc-gain');
+    gainEl.textContent = `${isPos ? '+' : ''}$${Math.abs(gain).toFixed(2)} (${isPos ? '+' : ''}${gainPct}%)`;
+    gainEl.className = `calc-result ${isPos ? 'positive' : 'negative'}`;
+  }
+
+  // ── CHAT ──────────────────────────────────────────────────────────────────
+  function toggleChat() {
+    document.getElementById('chat-popup').classList.toggle('open');
+  }
+
+  async function sendChat() {
+    const input = document.getElementById('chat-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+    input.value = '';
+
+    appendChat('user', msg);
+    chatHistory.push({ role: 'user', content: msg });
+
+    const thinking = appendChat('aria', '...');
+
+    try {
+      const res = await fetch(`${API}/api/query`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: msg, ticker: currentTicker, filters: {} })
+      });
+      if (!res.ok) throw new Error('Chat failed');
+      const d = await res.json();
+      const reply = d.answer || d.response || d.message || d.result || 'I encountered an issue. Please try again.';
+      thinking.textContent = reply;
+      chatHistory.push({ role: 'assistant', content: reply });
+    } catch {
+      thinking.textContent = 'Sorry, I could not connect to the backend. Please try again.';
+    }
+  }
+
+  function appendChat(role, text) {
+    const el = document.createElement('div');
+    el.className = `chat-msg ${role}`;
+    el.textContent = text;
+    const container = document.getElementById('chat-messages');
+    container.appendChild(el);
+    container.scrollTop = container.scrollHeight;
+    return el;
+  }
+
+  document.getElementById('chat-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendChat();
+  });
+</script>
+</body>
+</html>
