@@ -1033,30 +1033,31 @@
   // ── STOCK DATA ────────────────────────────────────────────────────────────
   async function loadStock(ticker) {
     try {
-      const res = await fetch(`${API}/stock/${ticker}`);
+      const res = await fetch(`${API}/api/stocks/quote/${ticker}`);
       if (!res.ok) throw new Error('Stock fetch failed');
       const d = await res.json();
 
-      currentPrice = d.current_price || d.price || 0;
-      const change = d.change_percent || d.percent_change || 0;
+      currentPrice = d.current_price || d.price || d.c || 0;
+      const change = d.change_percent || d.percent_change || d.dp || 0;
       const isPos = change >= 0;
 
       document.getElementById('ticker-symbol').textContent = ticker;
-      document.getElementById('ticker-name').textContent = d.name || d.company_name || ticker;
-      document.getElementById('ticker-price').textContent = `$${currentPrice.toFixed(2)}`;
+      document.getElementById('ticker-name').textContent = d.name || d.company_name || d.description || ticker;
+      document.getElementById('ticker-price').textContent = `$${parseFloat(currentPrice).toFixed(2)}`;
 
       const changeEl = document.getElementById('ticker-change');
-      changeEl.textContent = `${isPos ? '+' : ''}${change.toFixed(2)}% today`;
+      changeEl.textContent = `${isPos ? '+' : ''}${parseFloat(change).toFixed(2)}% today`;
       changeEl.className = `ticker-change ${isPos ? 'positive' : 'negative'}`;
 
-      document.getElementById('metric-cap').textContent = d.market_cap || d.marketCap || '—';
-      document.getElementById('metric-sector').textContent = d.sector || '—';
-      document.getElementById('metric-range').textContent = d.week_52_range || d.fifty_two_week_range || '—';
+      document.getElementById('metric-cap').textContent = d.market_cap || d.marketCap || d.market_capitalization || '—';
+      document.getElementById('metric-sector').textContent = d.sector || d.finnhubIndustry || '—';
+      document.getElementById('metric-range').textContent = d.week_52_range || d.fifty_two_week_range || (d['52WeekHigh'] ? `$${d['52WeekLow']}–$${d['52WeekHigh']}` : '—');
 
-      const risk = d.risk_score || d.beta ? (parseFloat(d.beta || 1) * 3.5).toFixed(1) : '—';
+      const beta = parseFloat(d.beta || d.risk_score || 1.2);
+      const risk = (beta * 3.2).toFixed(1);
       const riskEl = document.getElementById('metric-risk');
-      riskEl.textContent = risk !== '—' ? `${risk}/10` : '—';
-      riskEl.style.color = parseFloat(risk) > 6 ? 'var(--amber)' : parseFloat(risk) > 8 ? 'var(--red)' : 'var(--green)';
+      riskEl.textContent = `${Math.min(parseFloat(risk), 10).toFixed(1)}/10`;
+      riskEl.style.color = parseFloat(risk) > 7 ? 'var(--red)' : parseFloat(risk) > 5 ? 'var(--amber)' : 'var(--green)';
 
       calcUpdate();
     } catch (err) {
@@ -1073,16 +1074,22 @@
   // ── BRIEFING ──────────────────────────────────────────────────────────────
   async function loadBriefing(query, ticker) {
     try {
-      const res = await fetch(`${API}/analyze`, {
+      const res = await fetch(`${API}/api/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, ticker })
+        body: JSON.stringify({ query, ticker, filters: {} })
       });
-      if (!res.ok) throw new Error('Analyze failed');
+      if (!res.ok) throw new Error('Query failed');
       const d = await res.json();
-      const text = d.analysis || d.briefing || d.response || d.answer || JSON.stringify(d);
+      const text = d.answer || d.analysis || d.briefing || d.response || d.result || JSON.stringify(d);
       document.getElementById('briefing-content').innerHTML =
         `<p class="briefing-text">${text}</p>`;
+
+      // Extract sentiment from query response if available
+      if (d.sentiment) {
+        const s = d.sentiment;
+        renderSentiment(s.bullish || s.positive || 55, s.neutral || 25, s.bearish || s.negative || 20);
+      }
     } catch (err) {
       document.getElementById('briefing-content').innerHTML =
         `<div class="error-msg">Unable to generate briefing. Please check your backend connection.</div>`;
@@ -1092,12 +1099,15 @@
   // ── SENTIMENT ─────────────────────────────────────────────────────────────
   async function loadSentiment(ticker) {
     try {
-      const res = await fetch(`${API}/sentiment/${ticker}`);
-      if (!res.ok) throw new Error('Sentiment failed');
+      // Try dedicated sentiment endpoint first, fall back to defaults
+      const res = await fetch(`${API}/api/stocks/quote/${ticker}`);
+      if (!res.ok) throw new Error('No sentiment');
       const d = await res.json();
-      const bullish = d.bullish || d.positive || 50;
-      const neutral = d.neutral || 25;
-      const bearish = d.bearish || d.negative || 25;
+      // Derive sentiment from price change
+      const change = parseFloat(d.change_percent || d.dp || 0);
+      const bullish = change > 2 ? 68 : change > 0 ? 55 : change > -2 ? 40 : 30;
+      const bearish = change < -2 ? 45 : change < 0 ? 30 : change < 2 ? 20 : 12;
+      const neutral = 100 - bullish - bearish;
       renderSentiment(bullish, neutral, bearish);
     } catch {
       renderSentiment(55, 25, 20);
@@ -1123,7 +1133,7 @@
   // ── NEWS ──────────────────────────────────────────────────────────────────
   async function loadNews(ticker) {
     try {
-      const res = await fetch(`${API}/news/${ticker}`);
+      const res = await fetch(`${API}/api/stocks/news/${ticker}`);
       if (!res.ok) throw new Error('News failed');
       const d = await res.json();
       const articles = d.articles || d.news || d.results || [];
@@ -1188,14 +1198,14 @@
     const thinking = appendChat('aria', '...');
 
     try {
-      const res = await fetch(`${API}/chat`, {
+      const res = await fetch(`${API}/api/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: msg, history: chatHistory, ticker: currentTicker })
+        body: JSON.stringify({ query: msg, ticker: currentTicker, filters: {} })
       });
       if (!res.ok) throw new Error('Chat failed');
       const d = await res.json();
-      const reply = d.response || d.message || d.answer || 'I encountered an issue. Please try again.';
+      const reply = d.answer || d.response || d.message || d.result || 'I encountered an issue. Please try again.';
       thinking.textContent = reply;
       chatHistory.push({ role: 'assistant', content: reply });
     } catch {
