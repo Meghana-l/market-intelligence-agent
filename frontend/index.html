@@ -1536,6 +1536,14 @@
         <div class="log-meta">${l.time}</div>
       </div>`).join('');
   }
+
+  // ── KEEP RENDER AWAKE ────────────────────────────────────────────────────
+  function keepAlive() {
+    fetch(`${API}/api/health`).catch(() => {});
+  }
+  setInterval(keepAlive, 840000); // ping every 14 minutes
+  keepAlive(); // ping immediately on page load
+  
 </script>
 </body>
 </html>
