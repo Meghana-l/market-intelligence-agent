@@ -35,17 +35,13 @@ def get_stock_quote(ticker: str) -> dict:
     quote = market_data_service.get_quote(ticker)
     profile = get_company_profile(ticker)
     metrics = get_stock_metric(ticker)
-
     market_cap = profile.get("marketCapitalization")
     if market_cap:
         market_cap = f"${market_cap/1000:.2f}T" if market_cap > 1000 else f"${market_cap:.0f}B"
-
     week_52_high = metrics.get("52WeekHigh")
     week_52_low = metrics.get("52WeekLow")
     week_52_range = f"${week_52_low:.2f}–${week_52_high:.2f}" if week_52_high and week_52_low else "—"
-
     beta = metrics.get("beta")
-
     return {
         "ticker": quote.ticker,
         "current_price": quote.price,
@@ -72,13 +68,6 @@ def get_stock_news(ticker: str) -> list[NewsArticle]:
         for article in articles
     ]
 
-@router.get("/stream")
-def stream_quotes(ticker: str = "AAPL") -> EventSourceResponse:
-    async def generator():
-        while True:
-            quote = market_data_service.get_quote(ticker)
-            yield {"event": "quote", "data": quote.model_dump_json()}
-
 @router.get("/search")
 def search_ticker(q: str) -> dict:
     try:
@@ -88,5 +77,12 @@ def search_ticker(q: str) -> dict:
             return response.json()
     except:
         return {"result": []}
+
+@router.get("/stream")
+def stream_quotes(ticker: str = "AAPL") -> EventSourceResponse:
+    async def generator():
+        while True:
+            quote = market_data_service.get_quote(ticker)
+            yield {"event": "quote", "data": quote.model_dump_json()}
             await asyncio.sleep(10)
     return EventSourceResponse(generator())
