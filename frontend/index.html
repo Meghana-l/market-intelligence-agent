@@ -1070,7 +1070,7 @@
     }
   }
 
-  // ── BRIEFING ──────────────────────────────────────────────────────────────
+// ── BRIEFING ──────────────────────────────────────────────────────────────
   async function loadBriefing(query, ticker) {
     try {
       const res = await fetch(`${API}/api/query`, {
@@ -1081,10 +1081,13 @@
       if (!res.ok) throw new Error('Query failed');
       const d = await res.json();
       const text = d.answer || d.analysis || d.briefing || d.response || d.result || JSON.stringify(d);
+      const formatted = text
+        .replace(/Key Points:/g, '<br><br><strong>Key Points:</strong>')
+        .replace(/Key Risks:/g, '<br><br><strong>Key Risks:</strong>')
+        .replace(/Actionable Takeaways:/g, '<br><br><strong>Actionable Takeaways:</strong>')
+        .replace(/(\d+)\.\s/g, '<br>$1. ');
       document.getElementById('briefing-content').innerHTML =
-        `<p class="briefing-text">${text}</p>`;
-
-      // Extract sentiment from query response if available
+        `<p class="briefing-text">${formatted}</p>`;
       if (d.sentiment) {
         const s = d.sentiment;
         renderSentiment(s.bullish || s.positive || 55, s.neutral || 25, s.bearish || s.negative || 20);
@@ -1094,7 +1097,7 @@
         `<div class="error-msg">Unable to generate briefing. Please check your backend connection.</div>`;
     }
   }
-
+  
   // ── SENTIMENT ─────────────────────────────────────────────────────────────
   async function loadSentiment(ticker) {
     try {
