@@ -731,6 +731,258 @@
     border-radius: 8px;
     border: 1px solid rgba(239,68,68,0.2);
   }
+
+  /* ── PAGES ── */
+  .page { display: none; flex-direction: column; gap: 16px; }
+  .page.active { display: flex; }
+
+  .page-header {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+
+  .page-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+  }
+
+  /* Watchlist */
+  .watchlist-add {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .watchlist-input {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-bright);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-primary);
+    outline: none;
+    text-transform: uppercase;
+  }
+
+  .watchlist-input::placeholder { text-transform: none; color: var(--text-secondary); }
+  .watchlist-input:focus { border-color: var(--accent); }
+
+  .watchlist-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .watchlist-btn:hover { background: var(--accent-bright); }
+
+  .watchlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  .watchlist-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+
+  .watchlist-card:hover { border-color: var(--border-bright); }
+
+  .watchlist-card-ticker {
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-bright);
+    margin-bottom: 4px;
+  }
+
+  .watchlist-card-name {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+  }
+
+  .watchlist-card-price {
+    font-size: 22px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    color: #fff;
+  }
+
+  .watchlist-card-change {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .watchlist-remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.2s;
+  }
+
+  .watchlist-remove:hover { color: var(--red); }
+
+  .watchlist-empty {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 14px;
+    padding: 60px 0;
+  }
+
+  /* News Feed Page */
+  .news-search-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .news-search-input {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border-bright);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--text-primary);
+    outline: none;
+  }
+
+  .news-search-input:focus { border-color: var(--accent); }
+  .news-search-input::placeholder { color: var(--text-secondary); }
+
+  /* Calculator Page */
+  .calc-page-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .calc-page-input {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 15px;
+    font-family: 'JetBrains Mono', monospace;
+    color: #fff;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-top: 6px;
+  }
+
+  .calc-page-input:focus { border-color: var(--accent); }
+  .calc-page-label { font-size: 12px; color: var(--text-secondary); }
+
+  .calc-result-big {
+    font-size: 28px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 8px;
+  }
+
+  /* Agent Log */
+  .log-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .log-query {
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .log-meta {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .log-ticker {
+    display: inline-block;
+    background: rgba(37,99,235,0.15);
+    border: 1px solid var(--accent);
+    color: var(--accent-bright);
+    border-radius: 6px;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Geo Map */
+  .geo-events {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .geo-event {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .geo-flag { font-size: 24px; flex-shrink: 0; }
+
+  .geo-event-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .geo-event-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .geo-impact {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 6px;
+    display: inline-block;
+  }
+
+  .geo-impact.high { background: var(--red-bg); color: var(--red); }
+  .geo-impact.medium { background: rgba(245,158,11,0.1); color: var(--amber); }
+  .geo-impact.low { background: var(--green-bg); color: var(--green); }
 </style>
 </head>
 <body>
@@ -756,10 +1008,10 @@
       <button class="search-btn" onclick="handleSearch()">Ask ARIA</button>
     </div>
     <div class="chips">
-      <div class="chip" onclick="fillSearch(this)">How is the Iran war affecting my Tesla shares?</div>
-      <div class="chip" onclick="fillSearch(this)">Should I be worried about NVDA right now?</div>
+      <div class="chip" onclick="fillSearch(this)">Should I invest in NVDA right now?</div>
       <div class="chip" onclick="fillSearch(this)">What happened to Apple today?</div>
-      <div class="chip" onclick="fillSearch(this)">Explain what rising oil prices mean for my portfolio</div>
+      <div class="chip" onclick="fillSearch(this)">How are rising oil prices affecting energy stocks?</div>
+      <div class="chip" onclick="fillSearch(this)">Is TSLA a good buy given current market conditions?</div>
     </div>
   </div>
 </div>
@@ -772,17 +1024,20 @@
     <aside class="sidebar">
       <div class="sidebar-logo"><span>ARIA</span></div>
       <nav>
-        <div class="nav-item active"><span class="nav-icon">▦</span> Dashboard</div>
-        <div class="nav-item"><span class="nav-icon">★</span> My Watchlist</div>
-        <div class="nav-item"><span class="nav-icon">⌗</span> Calculator</div>
-        <div class="nav-item"><span class="nav-icon">◈</span> News Feed</div>
-        <div class="nav-item"><span class="nav-icon">⊕</span> Geopolitical Map</div>
-        <div class="nav-item"><span class="nav-icon">≡</span> Agent Log</div>
+        <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">▦</span> Dashboard</div>
+        <div class="nav-item" onclick="showPage('watchlist')"><span class="nav-icon">★</span> My Watchlist</div>
+        <div class="nav-item" onclick="showPage('calculator')"><span class="nav-icon">⌗</span> Calculator</div>
+        <div class="nav-item" onclick="showPage('newsfeed')"><span class="nav-icon">◈</span> News Feed</div>
+        <div class="nav-item" onclick="showPage('geomap')"><span class="nav-icon">⊕</span> Geopolitical Map</div>
+        <div class="nav-item" onclick="showPage('agentlog')"><span class="nav-icon">≡</span> Agent Log</div>
       </nav>
     </aside>
 
     <!-- Main -->
     <main class="main-content">
+
+      <!-- ── DASHBOARD PAGE ── -->
+      <div class="page active" id="page-dashboard">
 
       <!-- Topbar -->
       <div class="topbar">
@@ -885,6 +1140,86 @@
         </div>
       </div>
 
+      </div><!-- end dashboard page -->
+
+      <!-- ── WATCHLIST PAGE ── -->
+      <div class="page" id="page-watchlist">
+        <div class="page-header">My Watchlist</div>
+        <div class="page-sub">Track your favorite stocks. Data resets when you close the browser.</div>
+        <div class="watchlist-add">
+          <input class="watchlist-input" id="watchlist-input" type="text" placeholder="Enter ticker symbol (e.g. AAPL)" maxlength="6"
+            onkeydown="if(event.key==='Enter')addToWatchlist()">
+          <button class="watchlist-btn" onclick="addToWatchlist()">+ Add Stock</button>
+        </div>
+        <div class="watchlist-grid" id="watchlist-grid">
+          <div class="watchlist-empty" id="watchlist-empty">No stocks added yet. Add a ticker above to get started.</div>
+        </div>
+      </div>
+
+      <!-- ── CALCULATOR PAGE ── -->
+      <div class="page" id="page-calculator">
+        <div class="page-header">Investment Calculator</div>
+        <div class="page-sub">Calculate potential returns for any stock.</div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Enter Details</div></div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div>
+                <div class="calc-page-label">Stock Ticker</div>
+                <input class="calc-page-input" id="cp-ticker" type="text" placeholder="e.g. AAPL" oninput="this.value=this.value.toUpperCase()">
+              </div>
+              <div>
+                <div class="calc-page-label">Number of Shares</div>
+                <input class="calc-page-input" id="cp-shares" type="number" placeholder="e.g. 10" min="0">
+              </div>
+              <div>
+                <div class="calc-page-label">Your Average Buy Price ($)</div>
+                <input class="calc-page-input" id="cp-buy" type="number" placeholder="e.g. 150.00" min="0" step="0.01">
+              </div>
+              <button class="watchlist-btn" style="width:100%;margin-top:4px;" onclick="runCalcPage()">Calculate</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Results</div></div>
+            <div id="calc-page-results" style="display:flex;flex-direction:column;gap:16px;color:var(--text-secondary);font-size:13px;padding-top:8px;">
+              Enter your details and click Calculate to see results.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── NEWS FEED PAGE ── -->
+      <div class="page" id="page-newsfeed">
+        <div class="page-header">News Feed</div>
+        <div class="page-sub">Search the latest market news for any stock or topic.</div>
+        <div class="news-search-row">
+          <input class="news-search-input" id="newsfeed-input" type="text" placeholder="Search by ticker or company name (e.g. TSLA, Apple)"
+            onkeydown="if(event.key==='Enter')searchNewsFeed()">
+          <button class="watchlist-btn" onclick="searchNewsFeed()">Search</button>
+        </div>
+        <div class="card">
+          <div class="news-list" id="newsfeed-list">
+            <div class="watchlist-empty">Enter a ticker or company name above to search for news.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── GEOPOLITICAL MAP PAGE ── -->
+      <div class="page" id="page-geomap">
+        <div class="page-header">Geopolitical Map</div>
+        <div class="page-sub">Global events currently affecting financial markets.</div>
+        <div class="geo-events" id="geo-events-list"></div>
+      </div>
+
+      <!-- ── AGENT LOG PAGE ── -->
+      <div class="page" id="page-agentlog">
+        <div class="page-header">Agent Log</div>
+        <div class="page-sub">All queries made during this session.</div>
+        <div id="agent-log-list" style="display:flex;flex-direction:column;gap:10px;">
+          <div class="watchlist-empty">No queries yet. Ask ARIA something on the Dashboard to get started.</div>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
@@ -950,6 +1285,7 @@
     loadBriefing(query, ticker);
     loadSentiment(ticker);
     loadNews(ticker);
+    addToLog(query, ticker);
   }
 
   function reanalyze() {
@@ -1070,7 +1406,7 @@
     }
   }
 
-// ── BRIEFING ──────────────────────────────────────────────────────────────
+  // ── BRIEFING ──────────────────────────────────────────────────────────────
   async function loadBriefing(query, ticker) {
     try {
       const res = await fetch(`${API}/api/query`, {
@@ -1081,13 +1417,10 @@
       if (!res.ok) throw new Error('Query failed');
       const d = await res.json();
       const text = d.answer || d.analysis || d.briefing || d.response || d.result || JSON.stringify(d);
-      const formatted = text
-        .replace(/Key Points:/g, '<br><br><strong>Key Points:</strong>')
-        .replace(/Key Risks:/g, '<br><br><strong>Key Risks:</strong>')
-        .replace(/Actionable Takeaways:/g, '<br><br><strong>Actionable Takeaways:</strong>')
-        .replace(/(\d+)\.\s/g, '<br>$1. ');
       document.getElementById('briefing-content').innerHTML =
-        `<p class="briefing-text">${formatted}</p>`;
+        `<p class="briefing-text">${text}</p>`;
+
+      // Extract sentiment from query response if available
       if (d.sentiment) {
         const s = d.sentiment;
         renderSentiment(s.bullish || s.positive || 55, s.neutral || 25, s.bearish || s.negative || 20);
@@ -1097,7 +1430,7 @@
         `<div class="error-msg">Unable to generate briefing. Please check your backend connection.</div>`;
     }
   }
-  
+
   // ── SENTIMENT ─────────────────────────────────────────────────────────────
   async function loadSentiment(ticker) {
     try {
@@ -1154,8 +1487,7 @@
   function formatTime(ts) {
     if (!ts) return 'Recently';
     try {
-      const d = new Date(typeof ts === 'number' || /^\d+$/.test(ts) ? parseInt(ts) * 1000 : ts);
-      if (isNaN(d.getTime())) return 'Recently';
+      const d = new Date(typeof ts === 'number' ? ts * 1000 : ts);
       const diff = Math.floor((Date.now() - d) / 60000);
       if (diff < 60) return `${diff}m ago`;
       if (diff < 1440) return `${Math.floor(diff/60)}h ago`;
@@ -1184,7 +1516,7 @@
     gainEl.className = `calc-result ${isPos ? 'positive' : 'negative'}`;
   }
 
-// ── CHAT ──────────────────────────────────────────────────────────────────
+  // ── CHAT ──────────────────────────────────────────────────────────────────
   function toggleChat() {
     document.getElementById('chat-popup').classList.toggle('open');
   }
@@ -1196,15 +1528,8 @@
     input.value = '';
 
     appendChat('user', msg);
-
-    // Handle greetings locally
-    const greetings = ['hi', 'hello', 'hey', 'hi aria', 'hello aria', 'hey aria', 'hi!', 'hello!', 'hey!'];
-    if (greetings.includes(msg.toLowerCase().trim())) {
-      appendChat('aria', 'Hi! How can I help you today? Ask me anything about stocks, markets, or your portfolio.');
-      return;
-    }
-
     chatHistory.push({ role: 'user', content: msg });
+
     const thinking = appendChat('aria', '...');
 
     try {
@@ -1215,28 +1540,18 @@
       });
       if (!res.ok) throw new Error('Chat failed');
       const d = await res.json();
-      const raw = d.answer || d.response || d.message || d.result || 'I encountered an issue. Please try again.';
-      const formatted = formatChatText(raw);
-      thinking.innerHTML = formatted;
-      chatHistory.push({ role: 'assistant', content: raw });
+      const reply = d.answer || d.response || d.message || d.result || 'I encountered an issue. Please try again.';
+      thinking.textContent = reply;
+      chatHistory.push({ role: 'assistant', content: reply });
     } catch {
       thinking.textContent = 'Sorry, I could not connect to the backend. Please try again.';
     }
   }
 
-  function formatChatText(text) {
-    return text
-      .replace(/Key Points:/g, '<br><strong>Key Points:</strong>')
-      .replace(/Key Risks:/g, '<br><strong>Key Risks:</strong>')
-      .replace(/Actionable Takeaways:/g, '<br><strong>Actionable Takeaways:</strong>')
-      .replace(/(\d+)\.\s/g, '<br>$1. ')
-      .replace(/\n/g, '<br>');
-  }
-
   function appendChat(role, text) {
     const el = document.createElement('div');
     el.className = `chat-msg ${role}`;
-    el.innerHTML = text;
+    el.textContent = text;
     const container = document.getElementById('chat-messages');
     container.appendChild(el);
     container.scrollTop = container.scrollHeight;
@@ -1246,6 +1561,163 @@
   document.getElementById('chat-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') sendChat();
   });
+
+  // ── PAGE NAVIGATION ───────────────────────────────────────────────────────
+  function showPage(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    event.currentTarget.classList.add('active');
+    if (page === 'geomap') loadGeoEvents();
+  }
+
+  // ── WATCHLIST ─────────────────────────────────────────────────────────────
+  let watchlist = [];
+
+  function addToWatchlist() {
+    const input = document.getElementById('watchlist-input');
+    const ticker = input.value.trim().toUpperCase();
+    if (!ticker || watchlist.find(w => w.ticker === ticker)) { input.value = ''; return; }
+    input.value = '';
+    const entry = { ticker, name: ticker, price: '...', change: 0, loading: true };
+    watchlist.push(entry);
+    renderWatchlist();
+    fetchWatchlistPrice(ticker);
+  }
+
+  async function fetchWatchlistPrice(ticker) {
+    try {
+      const res = await fetch(`${API}/api/stocks/quote/${ticker}`);
+      const d = await res.json();
+      const entry = watchlist.find(w => w.ticker === ticker);
+      if (entry) {
+        entry.name = d.name || ticker;
+        entry.price = parseFloat(d.current_price || 0).toFixed(2);
+        entry.change = parseFloat(d.change_percent || 0).toFixed(2);
+        entry.loading = false;
+        renderWatchlist();
+      }
+    } catch {
+      const entry = watchlist.find(w => w.ticker === ticker);
+      if (entry) { entry.price = 'N/A'; entry.loading = false; renderWatchlist(); }
+    }
+  }
+
+  function removeFromWatchlist(ticker) {
+    watchlist = watchlist.filter(w => w.ticker !== ticker);
+    renderWatchlist();
+  }
+
+  function renderWatchlist() {
+    const grid = document.getElementById('watchlist-grid');
+    if (!watchlist.length) {
+      grid.innerHTML = '<div class="watchlist-empty">No stocks added yet. Add a ticker above to get started.</div>';
+      return;
+    }
+    grid.innerHTML = watchlist.map(w => {
+      const isPos = parseFloat(w.change) >= 0;
+      const changeColor = isPos ? 'var(--green)' : 'var(--red)';
+      return `
+        <div class="watchlist-card">
+          <button class="watchlist-remove" onclick="removeFromWatchlist('${w.ticker}')">✕</button>
+          <div class="watchlist-card-ticker">${w.ticker}</div>
+          <div class="watchlist-card-name">${w.name}</div>
+          <div class="watchlist-card-price">${w.loading ? '<span class="spinner"></span>' : '$' + w.price}</div>
+          <div class="watchlist-card-change" style="color:${changeColor}">${w.loading ? '' : (isPos ? '+' : '') + w.change + '% today'}</div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── CALCULATOR PAGE ───────────────────────────────────────────────────────
+  async function runCalcPage() {
+    const ticker = document.getElementById('cp-ticker').value.trim().toUpperCase();
+    const shares = parseFloat(document.getElementById('cp-shares').value) || 0;
+    const buyPrice = parseFloat(document.getElementById('cp-buy').value) || 0;
+    const results = document.getElementById('calc-page-results');
+    if (!ticker || !shares) { results.innerHTML = '<div class="error-msg">Please enter a ticker and number of shares.</div>'; return; }
+    results.innerHTML = '<div class="loading-state"><span class="spinner"></span> Fetching live price...</div>';
+    try {
+      const res = await fetch(`${API}/api/stocks/quote/${ticker}`);
+      const d = await res.json();
+      const livePrice = parseFloat(d.current_price || 0);
+      const currentValue = shares * livePrice;
+      const costBasis = shares * buyPrice;
+      const gain = currentValue - costBasis;
+      const gainPct = costBasis > 0 ? ((gain / costBasis) * 100).toFixed(2) : '—';
+      const isPos = gain >= 0;
+      const color = isPos ? 'var(--green)' : 'var(--red)';
+      results.innerHTML = `
+        <div><div class="calc-page-label">Company</div><div style="font-size:15px;font-weight:600;color:#fff;margin-top:4px;">${d.name || ticker}</div></div>
+        <div><div class="calc-page-label">Live Price</div><div class="calc-result-big" style="color:#fff;">$${livePrice.toFixed(2)}</div></div>
+        <div><div class="calc-page-label">Current Value (${shares} shares)</div><div class="calc-result-big" style="color:#fff;">$${currentValue.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}</div></div>
+        <div><div class="calc-page-label">Total Gain / Loss</div><div class="calc-result-big" style="color:${color}">${isPos?'+':''}$${Math.abs(gain).toFixed(2)} (${isPos?'+':''}${gainPct}%)</div></div>
+        <div><div class="calc-page-label">Cost Basis</div><div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">$${costBasis.toFixed(2)} at $${buyPrice.toFixed(2)}/share</div></div>`;
+    } catch {
+      results.innerHTML = '<div class="error-msg">Could not fetch price for this ticker. Please check the symbol.</div>';
+    }
+  }
+
+  // ── NEWS FEED PAGE ────────────────────────────────────────────────────────
+  async function searchNewsFeed() {
+    const query = document.getElementById('newsfeed-input').value.trim().toUpperCase();
+    if (!query) return;
+    const list = document.getElementById('newsfeed-list');
+    list.innerHTML = '<div class="loading-state"><span class="spinner"></span> Searching news...</div>';
+    try {
+      const res = await fetch(`${API}/api/stocks/news/${query}`);
+      const d = await res.json();
+      const articles = Array.isArray(d) ? d : (d.articles || d.news || []);
+      if (!articles.length) { list.innerHTML = '<div class="watchlist-empty">No news found for this ticker.</div>'; return; }
+      list.innerHTML = articles.slice(0, 15).map(a => `
+        <div class="news-item">
+          <div class="news-headline" onclick="window.open('${a.url || '#'}','_blank')">${a.title || a.headline}</div>
+          <div class="news-meta">${a.source?.name || a.source || 'Market News'} · ${formatTime(a.publishedAt || a.datetime || a.published_at)}</div>
+        </div>`).join('');
+    } catch {
+      list.innerHTML = '<div class="error-msg">Could not fetch news. Please try again.</div>';
+    }
+  }
+
+  // ── GEOPOLITICAL MAP ──────────────────────────────────────────────────────
+  function loadGeoEvents() {
+    const events = [
+      { flag: '🇮🇷', title: 'Iran-US Tensions', desc: 'Escalating conflict in the Middle East is disrupting oil supply routes and causing volatility in energy markets globally.', impact: 'high', tickers: ['XOM', 'CVX', 'USO'] },
+      { flag: '🇨🇳', title: 'US-China Trade Tariffs', desc: 'New tariff measures between the US and China are affecting tech supply chains, particularly semiconductor companies and consumer electronics manufacturers.', impact: 'high', tickers: ['AAPL', 'NVDA', 'TSM'] },
+      { flag: '🇷🇺', title: 'Russia-Ukraine War', desc: 'Ongoing conflict continues to impact European energy markets and global wheat/commodity prices, affecting inflation expectations.', impact: 'medium', tickers: ['BP', 'SHEL', 'WMT'] },
+      { flag: '🇯🇵', title: 'Bank of Japan Policy Shift', desc: 'Japan\'s central bank adjusting its yield curve control policy is causing ripple effects in global bond markets and currency pairs.', impact: 'medium', tickers: ['SONY'] },
+      { flag: '🇪🇺', title: 'European Energy Crisis', desc: 'High energy costs across Europe continue to pressure manufacturing sectors and reduce consumer spending power across the eurozone.', impact: 'low', tickers: ['SAP', 'ASML'] },
+      { flag: '🇸🇦', title: 'OPEC+ Production Cuts', desc: 'Saudi Arabia leading OPEC+ production cuts to maintain oil prices above $80/barrel, impacting energy inflation globally.', impact: 'medium', tickers: ['XOM', 'CVX', 'USO'] },
+    ];
+    document.getElementById('geo-events-list').innerHTML = events.map(e => `
+      <div class="geo-event">
+        <div class="geo-flag">${e.flag}</div>
+        <div style="flex:1;">
+          <div class="geo-event-title">${e.title}</div>
+          <div class="geo-event-desc">${e.desc}</div>
+          <div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span class="geo-impact ${e.impact}">${e.impact.toUpperCase()} IMPACT</span>
+            ${e.tickers.map(t => `<span class="log-ticker" style="cursor:pointer;" onclick="document.getElementById('topbar-input').value='What is happening with ${t}?';">${t}</span>`).join('')}
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  // ── AGENT LOG ─────────────────────────────────────────────────────────────
+  let agentLog = [];
+
+  function addToLog(query, ticker) {
+    agentLog.unshift({ query, ticker, time: new Date().toLocaleTimeString() });
+    const list = document.getElementById('agent-log-list');
+    list.innerHTML = agentLog.map(l => `
+      <div class="log-item">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="log-ticker">${l.ticker}</span>
+          <span class="log-query">${l.query}</span>
+        </div>
+        <div class="log-meta">${l.time}</div>
+      </div>`).join('');
+  }
+
   
 </script>
 </body>
