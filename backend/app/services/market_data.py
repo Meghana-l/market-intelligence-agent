@@ -1,31 +1,37 @@
 from datetime import datetime, timezone
-
 import httpx
-
-from app.core.config import settings
 from app.models.schemas import StockQuote
 
-
 class MarketDataService:
-    BASE_URL = "https://finnhub.io/api/v1"
-
     def get_quote(self, ticker: str) -> StockQuote:
-        params = {"symbol": ticker.upper(), "token": settings.finnhub_api_key}
+        try:
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker.upper()}"
+            headers = {"User-Agent": "Mozilla/5.0"}
+            with httpx.Client(timeout=10.0) as client:
+                response = client.get(url, headers=headers)
+                response.raise_for_status()
+                data = response.json()
 
-        with httpx.Client(timeout=10.0) as client:
-            response = client.get(f"{self.BASE_URL}/quote", params=params)
-            response.raise_for_status()
-            payload = response.json()
+            result = data["chart"]["result"][0]
+            meta = result["meta"]
+            current = float(meta.get("regularMarketPrice", 0))
+            previous = float(meta.get("previousClose", 0) or meta.get("chartPreviousClose", 0))
+            change = current - previous
+            change_percent = ((change / previous) * 100) if previous else 0
 
-        current = float(payload.get("c", 0) or 0)
-        previous_close = float(payload.get("pc", 0) or 0)
-        change = current - previous_close
-        change_percent = ((change / previous_close) * 100) if previous_close else 0
-
-        return StockQuote(
-            ticker=ticker.upper(),
-            price=current,
-            change=change,
-            change_percent=change_percent,
-            timestamp=datetime.now(timezone.utc).isoformat(),
-        )
+            return StockQuote(
+                ticker=ticker.upper(),
+                price=current,
+                change=change,
+                change_percent=change_percent,
+                timestamp=datetime.now(timezone.utc).isoformat(),
+            )
+        except Exception as e:
+            print(f"Yahoo Finance error for {ticker}: {e}")
+            return StockQuote(
+                ticker=ticker.upper(),
+                price=0,
+                change=0,
+                change_percent=0,
+                timestamp=datetime.now(timezone.utc).isoformat(),
+            )
