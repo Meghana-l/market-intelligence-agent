@@ -13,103 +13,105 @@ news_service = NewsService()
 
 def get_company_profile(ticker: str) -> dict:
     try:
-        url = f"https://query1.finance.yahoo.com/v10/finance/quoteSummary/{ticker.upper()}"
-        params = {"modules": "summaryProfile,summaryDetail,price"}
-        headers = {"User-Agent": "Mozilla/5.0"}
+        params = {"symbol": ticker.upper(), "token": settings.finnhub_api_key}
         with httpx.Client(timeout=10.0) as client:
-            response = client.get(url, params=params, headers=headers)
-            data = response.json()
-        result = data.get("quoteSummary", {}).get("result", [{}])[0]
-        profile = result.get("summaryProfile", {})
-        price_data = result.get("price", {})
-        detail = result.get("summaryDetail", {})
-        return {
-            "name": price_data.get("longName") or price_data.get("shortName", ticker),
-            "finnhubIndustry": profile.get("industry", "—"),
-            "marketCapitalization": price_data.get("marketCap", {}).get("raw", 0) / 1e6 if price_data.get("marketCap") else None,
-            "weburl": profile.get("website", ""),
-            "beta": detail.get("beta", {}).get("raw"),
-        }
-    except Exception as e:
-        print(f"Yahoo profile error for {ticker}: {e}")
+            response = client.get("https://finnhub.io/api/v1/stock/profile2", params=params)
+            return response.json()
+    except:
         return {}
 
-def get_stock_metric(ticker: str) -> dict:
+def get_stock_metric_finnhub(ticker: str) -> dict:
     try:
-        url = f"https://query1.finance.yahoo.com/v10/finance/quoteSummary/{ticker.upper()}"
-        params = {"modules": "summaryDetail,defaultKeyStatistics"}
-        headers = {"User-Agent": "Mozilla/5.0"}
+        params = {"symbol": ticker.upper(), "metric": "all", "token": settings.finnhub_api_key}
         with httpx.Client(timeout=10.0) as client:
-            response = client.get(url, params=params, headers=headers)
+            response = client.get("https://finnhub.io/api/v1/stock/metric", params=params)
             data = response.json()
-        result = data.get("quoteSummary", {}).get("result", [{}])[0]
-        detail = result.get("summaryDetail", {})
-        stats = result.get("defaultKeyStatistics", {})
-        return {
-            "52WeekHigh": detail.get("fiftyTwoWeekHigh", {}).get("raw"),
-            "52WeekLow": detail.get("fiftyTwoWeekLow", {}).get("raw"),
-            "beta": detail.get("beta", {}).get("raw") or stats.get("beta", {}).get("raw"),
-        }
-    except Exception as e:
-        print(f"Yahoo metrics error for {ticker}: {e}")
+            return data.get("metric", {})
+    except:
+        return {}
+
+def get_stock_metric_twelvedata(ticker: str) -> dict:
+    try:
+        params = {"symbol": ticker.upper(), "apikey": settings.twelvedata_api_key}
+        with httpx.Client(timeout=10.0) as client:
+            stats = client.get("https://api.twelvedata.com/statistics", params=params).json()
+            profile = client.get("https://api.twelvedata.com/profile", params=params).json()
+        result = {}
+        valuation = stats.get("statistics", {}).get("valuations_metrics", {})
+        technicals = stats.get("statistics", {}).get("stock_statistics", {})
+        result["52WeekHigh"] = technicals.get("52_week_high")
+        result["52WeekLow"] = technicals.get("52_week_low")
+        result["beta"] = technicals.get("beta")
+        result["market_cap"] = valuation.get("market_capitalization")
+        result["sector"] = profile.get("sector", "—")
+        result["name"] = profile.get("name", ticker)
+        return result
+    except:
         return {}
 
 @router.get("/quote/{ticker}")
 def get_stock_quote(ticker: str) -> dict:
-    try:
-        url = f"https://query1.finance.yahoo.com/v10/finance/quoteSummary/{ticker.upper()}"
-        params = {"modules": "summaryProfile,summaryDetail,price,defaultKeyStatistics"}
-        headers = {"User-Agent": "Mozilla/5.0"}
-        with httpx.Client(timeout=10.0) as client:
-            response = client.get(url, params=params, headers=headers)
-            data = response.json()
+    quote = market_data_service.get_quote(ticker)
+    profile = get_company_profile(ticker)
+    metrics = get_stock_metric_finnhub(ticker)
 
-        result = data.get("quoteSummary", {}).get("result", [{}])[0]
-        profile = result.get("summaryProfile", {})
-        price_data = result.get("price", {})
-        detail = result.get("summaryDetail", {})
-        stats = result.get("defaultKeyStatistics", {})
+    # If Finnhub returns no profile data, fall back to Twelve Data
+    if not profile.get("name") or quote.price == 0:
+        td = get_stock_metric_twelvedata(ticker)
+        name = td.get("name", ticker)
+        sector = td.get("sector", "—")
+        market_cap_raw = td.get("market_cap")
+        market_cap = f"${float(market_cap_raw)/1e12:.2f}T" if market_cap_raw and float(market_cap_raw) > 1e12 else (f"${float(market_cap_raw)/1e9:.0f}B" if market_cap_raw else "—")
+        week_52_high = td.get("52WeekHigh")
+        week_52_low = td.get("52WeekLow")
+        week_52_range = f"${float(week_52_low):.2f}–${float(week_52_high):.2f}" if week_52_high and week_52_low else "—"
+        beta = td.get("beta")
 
-        current = price_data.get("regularMarketPrice", {}).get("raw", 0)
-        previous = price_data.get("regularMarketPreviousClose", {}).get("raw", 0)
-        change = current - previous
-        change_percent = ((change / previous) * 100) if previous else 0
-
-        market_cap_raw = price_data.get("marketCap", {}).get("raw", 0)
-        if market_cap_raw:
-            market_cap = f"${market_cap_raw/1e12:.2f}T" if market_cap_raw > 1e12 else f"${market_cap_raw/1e9:.0f}B"
+        # Get price from Twelve Data if Finnhub returned 0
+        if quote.price == 0:
+            try:
+                params = {"symbol": ticker.upper(), "apikey": settings.twelvedata_api_key}
+                with httpx.Client(timeout=10.0) as client:
+                    price_data = client.get("https://api.twelvedata.com/price", params=params).json()
+                current_price = float(price_data.get("price", 0))
+                change_percent = 0.0
+            except:
+                current_price = 0
+                change_percent = 0.0
         else:
-            market_cap = "—"
-
-        week_52_high = detail.get("fiftyTwoWeekHigh", {}).get("raw")
-        week_52_low = detail.get("fiftyTwoWeekLow", {}).get("raw")
-        week_52_range = f"${week_52_low:.2f}–${week_52_high:.2f}" if week_52_high and week_52_low else "—"
-
-        beta = detail.get("beta", {}).get("raw") or stats.get("beta", {}).get("raw")
+            current_price = quote.price
+            change_percent = quote.change_percent
 
         return {
             "ticker": ticker.upper(),
-            "current_price": current,
-            "change_percent": round(change_percent, 2),
-            "name": price_data.get("longName") or price_data.get("shortName", ticker),
-            "sector": profile.get("sector", "—"),
+            "current_price": current_price,
+            "change_percent": change_percent,
+            "name": name,
+            "sector": sector,
             "market_cap": market_cap,
             "week_52_range": week_52_range,
             "beta": beta,
         }
-    except Exception as e:
-        print(f"Yahoo quote error: {e}")
-        quote = market_data_service.get_quote(ticker)
-        return {
-            "ticker": quote.ticker,
-            "current_price": quote.price,
-            "change_percent": quote.change_percent,
-            "name": ticker,
-            "sector": "—",
-            "market_cap": "—",
-            "week_52_range": "—",
-            "beta": None,
-        }
+
+    # Finnhub data available
+    market_cap = profile.get("marketCapitalization")
+    if market_cap:
+        market_cap = f"${market_cap/1000:.2f}T" if market_cap > 1000 else f"${market_cap:.0f}B"
+    week_52_high = metrics.get("52WeekHigh")
+    week_52_low = metrics.get("52WeekLow")
+    week_52_range = f"${week_52_low:.2f}–${week_52_high:.2f}" if week_52_high and week_52_low else "—"
+    beta = metrics.get("beta")
+
+    return {
+        "ticker": quote.ticker,
+        "current_price": quote.price,
+        "change_percent": quote.change_percent,
+        "name": profile.get("name", ticker),
+        "sector": profile.get("finnhubIndustry", "—"),
+        "market_cap": market_cap or "—",
+        "week_52_range": week_52_range,
+        "beta": beta,
+    }
 
 @router.get("/news/{ticker}", response_model=list[NewsArticle])
 def get_stock_news(ticker: str) -> list[NewsArticle]:
