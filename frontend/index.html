@@ -1099,8 +1099,9 @@
     currentPrice = 0;
   }
 
-  // ── TICKER EXTRACTION ─────────────────────────────────────────────────────
-  function extractTicker(query) {
+// ── TICKER EXTRACTION ─────────────────────────────────────────────────────
+  async function extractTickerSmart(query) {
+    // First check the local map for common ones
     const map = {
       tesla: 'TSLA', tsla: 'TSLA',
       nvidia: 'NVDA', nvda: 'NVDA',
@@ -1111,12 +1112,27 @@
       meta: 'META', facebook: 'META',
       netflix: 'NFLX', nflx: 'NFLX',
       amd: 'AMD', intel: 'INTC', intc: 'INTC',
-      'sp500': 'SPY', sp: 'SPY', 'oil': 'USO',
+      sp500: 'SPY', oil: 'USO',
     };
     const lower = query.toLowerCase();
     for (const [k, v] of Object.entries(map)) {
       if (lower.includes(k)) return v;
     }
+
+    // Try Finnhub symbol search for anything not in the map
+    try {
+      const words = query.match(/\b[a-zA-Z]{2,}\b/g) || [];
+      const searchQuery = words.slice(0, 3).join(' ');
+      const res = await fetch(`${API}/api/stocks/search?q=${encodeURIComponent(searchQuery)}`);
+      if (res.ok) {
+        const d = await res.json();
+        if (d.result && d.result.length > 0) {
+          return d.result[0].symbol;
+        }
+      }
+    } catch {}
+
+    // Fallback: extract uppercase word from query
     const match = query.match(/\b([A-Z]{1,5})\b/);
     return match ? match[1] : 'AAPL';
   }
