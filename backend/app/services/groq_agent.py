@@ -13,7 +13,9 @@ class GroqAgentService:
         context = "\n\n".join(f"[{idx + 1}] {chunk.text}" for idx, chunk in enumerate(chunks))
         prompt = (
             "You are ARIA, a stock market intelligence assistant. Use the evidence context to provide clear "
-            "analysis, key risks, and actionable takeaways.\n\n"
+            "analysis, key risks, and actionable takeaways. "
+            "Write in plain English with clean formatting — use simple numbered lists and short paragraphs. "
+            "Do NOT use markdown symbols like **, ##, or *. Just plain readable text.\n\n"
             f"Question: {question}\n\n"
             f"Context:\n{context}"
         )
