@@ -1184,7 +1184,7 @@
     gainEl.className = `calc-result ${isPos ? 'positive' : 'negative'}`;
   }
 
-  // ── CHAT ──────────────────────────────────────────────────────────────────
+// ── CHAT ──────────────────────────────────────────────────────────────────
   function toggleChat() {
     document.getElementById('chat-popup').classList.toggle('open');
   }
@@ -1196,8 +1196,15 @@
     input.value = '';
 
     appendChat('user', msg);
-    chatHistory.push({ role: 'user', content: msg });
 
+    // Handle greetings locally
+    const greetings = ['hi', 'hello', 'hey', 'hi aria', 'hello aria', 'hey aria', 'hi!', 'hello!', 'hey!'];
+    if (greetings.includes(msg.toLowerCase().trim())) {
+      appendChat('aria', 'Hi! How can I help you today? Ask me anything about stocks, markets, or your portfolio.');
+      return;
+    }
+
+    chatHistory.push({ role: 'user', content: msg });
     const thinking = appendChat('aria', '...');
 
     try {
@@ -1208,18 +1215,28 @@
       });
       if (!res.ok) throw new Error('Chat failed');
       const d = await res.json();
-      const reply = d.answer || d.response || d.message || d.result || 'I encountered an issue. Please try again.';
-      thinking.textContent = reply;
-      chatHistory.push({ role: 'assistant', content: reply });
+      const raw = d.answer || d.response || d.message || d.result || 'I encountered an issue. Please try again.';
+      const formatted = formatChatText(raw);
+      thinking.innerHTML = formatted;
+      chatHistory.push({ role: 'assistant', content: raw });
     } catch {
       thinking.textContent = 'Sorry, I could not connect to the backend. Please try again.';
     }
   }
 
+  function formatChatText(text) {
+    return text
+      .replace(/Key Points:/g, '<br><strong>Key Points:</strong>')
+      .replace(/Key Risks:/g, '<br><strong>Key Risks:</strong>')
+      .replace(/Actionable Takeaways:/g, '<br><strong>Actionable Takeaways:</strong>')
+      .replace(/(\d+)\.\s/g, '<br>$1. ')
+      .replace(/\n/g, '<br>');
+  }
+
   function appendChat(role, text) {
     const el = document.createElement('div');
     el.className = `chat-msg ${role}`;
-    el.textContent = text;
+    el.innerHTML = text;
     const container = document.getElementById('chat-messages');
     container.appendChild(el);
     container.scrollTop = container.scrollHeight;
@@ -1229,6 +1246,7 @@
   document.getElementById('chat-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') sendChat();
   });
+  
 </script>
 </body>
 </html>
