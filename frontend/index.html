@@ -1053,23 +1053,30 @@
     showDashboard(q);
   }
 
-  // ── SHOW DASHBOARD ────────────────────────────────────────────────────────
-  function showDashboard(query) {
+// ── SHOW DASHBOARD ────────────────────────────────────────────────────────
+  async function showDashboard(query) {
     document.getElementById('landing').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('chat-float').style.display = 'flex';
     document.getElementById('topbar-input').value = query;
 
-    const ticker = extractTicker(query);
+    // Use local map first for instant response
+    let ticker = extractTicker(query);
     currentTicker = ticker;
 
-    // Make sure dashboard page is active
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-dashboard').classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelector('.nav-item').classList.add('active');
 
     animatePipeline();
+
+    // If local map returned default AAPL and query doesn't mention apple, search smarter
+    if (ticker === 'AAPL' && !query.toLowerCase().includes('apple') && !query.toLowerCase().includes('aapl')) {
+      ticker = await extractTickerSmart(query);
+      currentTicker = ticker;
+    }
+
     loadStock(ticker);
     loadBriefing(query, ticker);
     loadSentiment(ticker);
