@@ -78,5 +78,15 @@ def stream_quotes(ticker: str = "AAPL") -> EventSourceResponse:
         while True:
             quote = market_data_service.get_quote(ticker)
             yield {"event": "quote", "data": quote.model_dump_json()}
+
+@router.get("/search")
+def search_ticker(q: str) -> dict:
+    try:
+        params = {"q": q, "token": settings.finnhub_api_key}
+        with httpx.Client(timeout=10.0) as client:
+            response = client.get("https://finnhub.io/api/v1/search", params=params)
+            return response.json()
+    except:
+        return {"result": []}
             await asyncio.sleep(10)
     return EventSourceResponse(generator())
