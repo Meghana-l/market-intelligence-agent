@@ -732,254 +732,48 @@
     border: 1px solid rgba(239,68,68,0.2);
   }
 
-  /* ── PAGES ── */
+  /* ── NEW PAGES CSS (ADDED ONLY) ── */
   .page { display: none; flex-direction: column; gap: 16px; }
   .page.active { display: flex; }
+  .page-header { font-size: 20px; font-weight: 700; color: #fff; }
+  .page-sub { font-size: 13px; color: var(--text-secondary); margin-top: -8px; }
 
-  .page-header {
-    font-size: 20px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 4px;
-  }
-
-  .page-sub {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-  }
-
-  /* Watchlist */
-  .watchlist-add {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 8px;
-  }
-
-  .watchlist-input {
-    flex: 1;
-    background: var(--bg-card);
-    border: 1px solid var(--border-bright);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 14px;
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--text-primary);
-    outline: none;
-    text-transform: uppercase;
-  }
-
+  .watchlist-add { display: flex; gap: 10px; }
+  .watchlist-input { flex: 1; background: var(--bg-card); border: 1px solid var(--border-bright); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-family: 'Space Grotesk', sans-serif; color: var(--text-primary); outline: none; text-transform: uppercase; }
   .watchlist-input::placeholder { text-transform: none; color: var(--text-secondary); }
   .watchlist-input:focus { border-color: var(--accent); }
-
-  .watchlist-btn {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 20px;
-    font-size: 14px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
+  .watchlist-btn { background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 12px 20px; font-size: 14px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; cursor: pointer; }
   .watchlist-btn:hover { background: var(--accent-bright); }
-
-  .watchlist-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px;
-  }
-
-  .watchlist-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    position: relative;
-    transition: border-color 0.2s;
-  }
-
-  .watchlist-card:hover { border-color: var(--border-bright); }
-
-  .watchlist-card-ticker {
-    font-size: 16px;
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-    color: var(--accent-bright);
-    margin-bottom: 4px;
-  }
-
-  .watchlist-card-name {
-    font-size: 12px;
-    color: var(--text-secondary);
-    margin-bottom: 12px;
-  }
-
-  .watchlist-card-price {
-    font-size: 22px;
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-    color: #fff;
-  }
-
-  .watchlist-card-change {
-    font-size: 12px;
-    font-weight: 600;
-    margin-top: 4px;
-  }
-
-  .watchlist-remove {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 16px;
-    transition: color 0.2s;
-  }
-
+  .watchlist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .watchlist-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; position: relative; }
+  .watchlist-card-ticker { font-size: 16px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--accent-bright); margin-bottom: 4px; }
+  .watchlist-card-name { font-size: 12px; color: var(--text-secondary); margin-bottom: 10px; }
+  .watchlist-card-price { font-size: 22px; font-weight: 700; font-family: 'JetBrains Mono', monospace; color: #fff; }
+  .watchlist-card-change { font-size: 12px; font-weight: 600; margin-top: 4px; }
+  .watchlist-remove { position: absolute; top: 10px; right: 10px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; }
   .watchlist-remove:hover { color: var(--red); }
+  .watchlist-empty { text-align: center; color: var(--text-secondary); font-size: 14px; padding: 60px 0; }
 
-  .watchlist-empty {
-    text-align: center;
-    color: var(--text-secondary);
-    font-size: 14px;
-    padding: 60px 0;
-  }
-
-  /* News Feed Page */
-  .news-search-row {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 8px;
-  }
-
-  .news-search-input {
-    flex: 1;
-    background: var(--bg-card);
-    border: 1px solid var(--border-bright);
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-size: 14px;
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--text-primary);
-    outline: none;
-  }
-
+  .news-search-row { display: flex; gap: 10px; }
+  .news-search-input { flex: 1; background: var(--bg-card); border: 1px solid var(--border-bright); border-radius: 10px; padding: 12px 16px; font-size: 14px; font-family: 'Space Grotesk', sans-serif; color: var(--text-primary); outline: none; }
   .news-search-input:focus { border-color: var(--accent); }
   .news-search-input::placeholder { color: var(--text-secondary); }
 
-  /* Calculator Page */
-  .calc-page-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .calc-page-input {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 15px;
-    font-family: 'JetBrains Mono', monospace;
-    color: #fff;
-    width: 100%;
-    outline: none;
-    transition: border-color 0.2s;
-    margin-top: 6px;
-  }
-
+  .calc-page-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+  .calc-page-input { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 15px; font-family: 'JetBrains Mono', monospace; color: #fff; width: 100%; outline: none; }
   .calc-page-input:focus { border-color: var(--accent); }
-  .calc-page-label { font-size: 12px; color: var(--text-secondary); }
+  .calc-result-big { font-size: 26px; font-weight: 700; font-family: 'JetBrains Mono', monospace; margin-top: 4px; }
 
-  .calc-result-big {
-    font-size: 28px;
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-    margin-top: 8px;
-  }
+  .log-item { display: flex; flex-direction: column; gap: 6px; padding: 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; }
+  .log-query { font-size: 13px; color: var(--text-primary); font-weight: 500; }
+  .log-meta { font-size: 11px; color: var(--text-secondary); font-family: 'JetBrains Mono', monospace; }
+  .log-ticker { display: inline-block; background: rgba(37,99,235,0.15); border: 1px solid var(--accent); color: var(--accent-bright); border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
 
-  /* Agent Log */
-  .log-item {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 14px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-  }
-
-  .log-query {
-    font-size: 13px;
-    color: var(--text-primary);
-    font-weight: 500;
-  }
-
-  .log-meta {
-    font-size: 11px;
-    color: var(--text-secondary);
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  .log-ticker {
-    display: inline-block;
-    background: rgba(37,99,235,0.15);
-    border: 1px solid var(--accent);
-    color: var(--accent-bright);
-    border-radius: 6px;
-    padding: 2px 8px;
-    font-size: 11px;
-    font-weight: 700;
-    font-family: 'JetBrains Mono', monospace;
-  }
-
-  /* Geo Map */
-  .geo-events {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .geo-event {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    padding: 14px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-  }
-
+  .geo-event { display: flex; gap: 14px; align-items: flex-start; padding: 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; }
   .geo-flag { font-size: 24px; flex-shrink: 0; }
-
-  .geo-event-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-  }
-
-  .geo-event-desc {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-  }
-
-  .geo-impact {
-    font-size: 11px;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-top: 6px;
-    display: inline-block;
-  }
-
+  .geo-event-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .geo-event-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .geo-impact { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-top: 6px; }
   .geo-impact.high { background: var(--red-bg); color: var(--red); }
   .geo-impact.medium { background: rgba(245,158,11,0.1); color: var(--amber); }
   .geo-impact.low { background: var(--green-bg); color: var(--green); }
@@ -1024,166 +818,154 @@
     <aside class="sidebar">
       <div class="sidebar-logo"><span>ARIA</span></div>
       <nav>
-        <div class="nav-item active" onclick="showPage('dashboard')"><span class="nav-icon">▦</span> Dashboard</div>
-        <div class="nav-item" onclick="showPage('watchlist')"><span class="nav-icon">★</span> My Watchlist</div>
-        <div class="nav-item" onclick="showPage('calculator')"><span class="nav-icon">⌗</span> Calculator</div>
-        <div class="nav-item" onclick="showPage('newsfeed')"><span class="nav-icon">◈</span> News Feed</div>
-        <div class="nav-item" onclick="showPage('geomap')"><span class="nav-icon">⊕</span> Geopolitical Map</div>
-        <div class="nav-item" onclick="showPage('agentlog')"><span class="nav-icon">≡</span> Agent Log</div>
+        <div class="nav-item active" onclick="showPage('dashboard',this)"><span class="nav-icon">▦</span> Dashboard</div>
+        <div class="nav-item" onclick="showPage('watchlist',this)"><span class="nav-icon">★</span> My Watchlist</div>
+        <div class="nav-item" onclick="showPage('calculator',this)"><span class="nav-icon">⌗</span> Calculator</div>
+        <div class="nav-item" onclick="showPage('newsfeed',this)"><span class="nav-icon">◈</span> News Feed</div>
+        <div class="nav-item" onclick="showPage('geomap',this)"><span class="nav-icon">⊕</span> Geopolitical Map</div>
+        <div class="nav-item" onclick="showPage('agentlog',this)"><span class="nav-icon">≡</span> Agent Log</div>
       </nav>
     </aside>
 
     <!-- Main -->
     <main class="main-content">
 
-      <!-- ── DASHBOARD PAGE ── -->
+      <!-- ── DASHBOARD PAGE (existing, untouched) ── -->
       <div class="page active" id="page-dashboard">
 
-      <!-- Topbar -->
-      <div class="topbar">
-        <input class="topbar-input" id="topbar-input" type="text" placeholder="Ask ARIA anything...">
-        <button class="topbar-btn" onclick="reanalyze()">Re-analyze</button>
-      </div>
+        <!-- Topbar -->
+        <div class="topbar">
+          <input class="topbar-input" id="topbar-input" type="text" placeholder="Ask ARIA anything...">
+          <button class="topbar-btn" onclick="reanalyze()">Re-analyze</button>
+        </div>
 
-      <!-- Ticker row -->
-      <div class="ticker-row">
-        <div class="ticker-badge" id="ticker-symbol">—</div>
-        <div class="ticker-name" id="ticker-name">Loading...</div>
-        <div class="ticker-price" id="ticker-price">—</div>
-        <div class="ticker-change" id="ticker-change">—</div>
-      </div>
+        <!-- Ticker row -->
+        <div class="ticker-row">
+          <div class="ticker-badge" id="ticker-symbol">—</div>
+          <div class="ticker-name" id="ticker-name">Loading...</div>
+          <div class="ticker-price" id="ticker-price">—</div>
+          <div class="ticker-change" id="ticker-change">—</div>
+        </div>
 
-      <!-- Metrics -->
-      <div class="metrics-row">
-        <div class="metric-card">
-          <div class="metric-label">Market Cap</div>
-          <div class="metric-value" id="metric-cap"><span class="spinner"></span></div>
+        <!-- Metrics -->
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-label">Market Cap</div>
+            <div class="metric-value" id="metric-cap"><span class="spinner"></span></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Sector</div>
+            <div class="metric-value" id="metric-sector"><span class="spinner"></span></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">52W Range</div>
+            <div class="metric-value" id="metric-range"><span class="spinner"></span></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-label">Risk Score</div>
+            <div class="metric-value" id="metric-risk"><span class="spinner"></span></div>
+          </div>
         </div>
-        <div class="metric-card">
-          <div class="metric-label">Sector</div>
-          <div class="metric-value" id="metric-sector"><span class="spinner"></span></div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">52W Range</div>
-          <div class="metric-value" id="metric-range"><span class="spinner"></span></div>
-        </div>
-        <div class="metric-card">
-          <div class="metric-label">Risk Score</div>
-          <div class="metric-value" id="metric-risk"><span class="spinner"></span></div>
-        </div>
-      </div>
 
-      <!-- Agent Briefing + Pipeline -->
-      <div class="two-col">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">ARIA's Analysis</div>
-            <div class="live-badge"><span class="dot"></span> Live</div>
-          </div>
-          <div id="briefing-content">
-            <div class="loading-state"><span class="spinner"></span> ARIA is analyzing...</div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">What ARIA is Doing</div>
-          </div>
-          <div class="pipeline-steps" id="pipeline-steps">
-            <div class="pipeline-step pending"><span class="step-dot pending"></span> Initializing...</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Calculator + Sentiment -->
-      <div class="two-col">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Investment Calculator</div>
-          </div>
-          <div class="calc-inputs">
-            <div class="calc-row">
-              <span class="calc-label">Shares I own</span>
-              <input class="calc-input" id="calc-shares" type="number" value="10" min="0" onchange="calcUpdate()">
+        <!-- Agent Briefing + Pipeline -->
+        <div class="two-col">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">ARIA's Analysis</div>
+              <div class="live-badge"><span class="dot"></span> Live</div>
             </div>
-            <div class="calc-row">
-              <span class="calc-label">Avg buy price</span>
-              <input class="calc-input" id="calc-buy" type="number" value="" placeholder="$0.00" min="0" step="0.01" onchange="calcUpdate()">
+            <div id="briefing-content">
+              <div class="loading-state"><span class="spinner"></span> ARIA is analyzing...</div>
             </div>
-            <hr class="calc-divider">
-            <div class="calc-row">
-              <span class="calc-label">Current value</span>
-              <span class="calc-result" id="calc-value">—</span>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">What ARIA is Doing</div>
             </div>
-            <div class="calc-row">
-              <span class="calc-label">Total gain / loss</span>
-              <span class="calc-result" id="calc-gain">—</span>
+            <div class="pipeline-steps" id="pipeline-steps">
+              <div class="pipeline-step pending"><span class="step-dot pending"></span> Initializing...</div>
             </div>
           </div>
         </div>
+
+        <!-- Calculator + Sentiment -->
+        <div class="two-col">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Investment Calculator</div>
+            </div>
+            <div class="calc-inputs">
+              <div class="calc-row">
+                <span class="calc-label">Shares I own</span>
+                <input class="calc-input" id="calc-shares" type="number" value="10" min="0" onchange="calcUpdate()">
+              </div>
+              <div class="calc-row">
+                <span class="calc-label">Avg buy price</span>
+                <input class="calc-input" id="calc-buy" type="number" value="" placeholder="$0.00" min="0" step="0.01" onchange="calcUpdate()">
+              </div>
+              <hr class="calc-divider">
+              <div class="calc-row">
+                <span class="calc-label">Current value</span>
+                <span class="calc-result" id="calc-value">—</span>
+              </div>
+              <div class="calc-row">
+                <span class="calc-label">Total gain / loss</span>
+                <span class="calc-result" id="calc-gain">—</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Market Mood</div>
+            </div>
+            <div class="sentiment-bars" id="sentiment-bars">
+              <div class="loading-state"><span class="spinner"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- News -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title">Market Mood</div>
+            <div class="card-title">Latest Market News</div>
           </div>
-          <div class="sentiment-bars" id="sentiment-bars">
-            <div class="loading-state"><span class="spinner"></span></div>
+          <div class="news-list" id="news-list">
+            <div class="loading-state"><span class="spinner"></span> Fetching news...</div>
           </div>
         </div>
-      </div>
 
-      <!-- News -->
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title">Latest Market News</div>
-        </div>
-        <div class="news-list" id="news-list">
-          <div class="loading-state"><span class="spinner"></span> Fetching news...</div>
-        </div>
-      </div>
+      </div><!-- end page-dashboard -->
 
-      </div><!-- end dashboard page -->
-
-      <!-- ── WATCHLIST PAGE ── -->
+      <!-- ── MY WATCHLIST PAGE ── -->
       <div class="page" id="page-watchlist">
         <div class="page-header">My Watchlist</div>
-        <div class="page-sub">Track your favorite stocks. Data resets when you close the browser.</div>
+        <div class="page-sub">Track stocks for this session. Resets when you close the browser.</div>
         <div class="watchlist-add">
-          <input class="watchlist-input" id="watchlist-input" type="text" placeholder="Enter ticker symbol (e.g. AAPL)" maxlength="6"
-            onkeydown="if(event.key==='Enter')addToWatchlist()">
-          <button class="watchlist-btn" onclick="addToWatchlist()">+ Add Stock</button>
+          <input class="watchlist-input" id="watchlist-input" type="text" placeholder="Enter ticker (e.g. AAPL)" maxlength="6" onkeydown="if(event.key==='Enter')addToWatchlist()">
+          <button class="watchlist-btn" onclick="addToWatchlist()">+ Add</button>
         </div>
         <div class="watchlist-grid" id="watchlist-grid">
-          <div class="watchlist-empty" id="watchlist-empty">No stocks added yet. Add a ticker above to get started.</div>
+          <div class="watchlist-empty">No stocks added yet. Type a ticker above to get started.</div>
         </div>
       </div>
 
       <!-- ── CALCULATOR PAGE ── -->
       <div class="page" id="page-calculator">
         <div class="page-header">Investment Calculator</div>
-        <div class="page-sub">Calculate potential returns for any stock.</div>
+        <div class="page-sub">Calculate returns for any stock using live prices.</div>
         <div class="two-col">
           <div class="card">
             <div class="card-header"><div class="card-title">Enter Details</div></div>
             <div style="display:flex;flex-direction:column;gap:14px;">
-              <div>
-                <div class="calc-page-label">Stock Ticker</div>
-                <input class="calc-page-input" id="cp-ticker" type="text" placeholder="e.g. AAPL" oninput="this.value=this.value.toUpperCase()">
-              </div>
-              <div>
-                <div class="calc-page-label">Number of Shares</div>
-                <input class="calc-page-input" id="cp-shares" type="number" placeholder="e.g. 10" min="0">
-              </div>
-              <div>
-                <div class="calc-page-label">Your Average Buy Price ($)</div>
-                <input class="calc-page-input" id="cp-buy" type="number" placeholder="e.g. 150.00" min="0" step="0.01">
-              </div>
-              <button class="watchlist-btn" style="width:100%;margin-top:4px;" onclick="runCalcPage()">Calculate</button>
+              <div><div class="calc-page-label">Stock Ticker</div><input class="calc-page-input" id="cp-ticker" type="text" placeholder="e.g. AAPL" oninput="this.value=this.value.toUpperCase()"></div>
+              <div><div class="calc-page-label">Number of Shares</div><input class="calc-page-input" id="cp-shares" type="number" placeholder="e.g. 10" min="0"></div>
+              <div><div class="calc-page-label">Your Avg Buy Price ($)</div><input class="calc-page-input" id="cp-buy" type="number" placeholder="e.g. 150.00" min="0" step="0.01"></div>
+              <button class="watchlist-btn" style="width:100%;" onclick="runCalcPage()">Calculate</button>
             </div>
           </div>
           <div class="card">
             <div class="card-header"><div class="card-title">Results</div></div>
-            <div id="calc-page-results" style="display:flex;flex-direction:column;gap:16px;color:var(--text-secondary);font-size:13px;padding-top:8px;">
-              Enter your details and click Calculate to see results.
-            </div>
+            <div id="calc-page-results" style="color:var(--text-secondary);font-size:13px;">Enter your details and click Calculate.</div>
           </div>
         </div>
       </div>
@@ -1191,15 +973,14 @@
       <!-- ── NEWS FEED PAGE ── -->
       <div class="page" id="page-newsfeed">
         <div class="page-header">News Feed</div>
-        <div class="page-sub">Search the latest market news for any stock or topic.</div>
+        <div class="page-sub">Search the latest market news for any stock.</div>
         <div class="news-search-row">
-          <input class="news-search-input" id="newsfeed-input" type="text" placeholder="Search by ticker or company name (e.g. TSLA, Apple)"
-            onkeydown="if(event.key==='Enter')searchNewsFeed()">
+          <input class="news-search-input" id="newsfeed-input" type="text" placeholder="Enter ticker or company (e.g. TSLA, Apple)" onkeydown="if(event.key==='Enter')searchNewsFeed()">
           <button class="watchlist-btn" onclick="searchNewsFeed()">Search</button>
         </div>
         <div class="card">
           <div class="news-list" id="newsfeed-list">
-            <div class="watchlist-empty">Enter a ticker or company name above to search for news.</div>
+            <div class="watchlist-empty">Enter a ticker above to search for news.</div>
           </div>
         </div>
       </div>
@@ -1208,7 +989,7 @@
       <div class="page" id="page-geomap">
         <div class="page-header">Geopolitical Map</div>
         <div class="page-sub">Global events currently affecting financial markets.</div>
-        <div class="geo-events" id="geo-events-list"></div>
+        <div id="geo-events-list" style="display:flex;flex-direction:column;gap:10px;"></div>
       </div>
 
       <!-- ── AGENT LOG PAGE ── -->
@@ -1216,7 +997,7 @@
         <div class="page-header">Agent Log</div>
         <div class="page-sub">All queries made during this session.</div>
         <div id="agent-log-list" style="display:flex;flex-direction:column;gap:10px;">
-          <div class="watchlist-empty">No queries yet. Ask ARIA something on the Dashboard to get started.</div>
+          <div class="watchlist-empty">No queries yet. Search something on the Dashboard first.</div>
         </div>
       </div>
 
@@ -1253,6 +1034,8 @@
   let currentTicker = '';
   let currentPrice = 0;
   let chatHistory = [];
+  let agentLog = [];
+  let watchlist = [];
 
   // ── LANDING ──────────────────────────────────────────────────────────────
   document.getElementById('landing-input').addEventListener('keydown', e => {
@@ -1279,6 +1062,12 @@
 
     const ticker = extractTicker(query);
     currentTicker = ticker;
+
+    // Make sure dashboard page is active
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-dashboard').classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelector('.nav-item').classList.add('active');
 
     animatePipeline();
     loadStock(ticker);
@@ -1417,10 +1206,13 @@
       if (!res.ok) throw new Error('Query failed');
       const d = await res.json();
       const text = d.answer || d.analysis || d.briefing || d.response || d.result || JSON.stringify(d);
+      const formatted = text
+        .replace(/Key Points:/g, '<br><br><strong>Key Points:</strong>')
+        .replace(/Key Risks:/g, '<br><br><strong>Key Risks:</strong>')
+        .replace(/Actionable Takeaways:/g, '<br><br><strong>Actionable Takeaways:</strong>')
+        .replace(/(\d+)\.\s/g, '<br>$1. ');
       document.getElementById('briefing-content').innerHTML =
-        `<p class="briefing-text">${text}</p>`;
-
-      // Extract sentiment from query response if available
+        `<p class="briefing-text">${formatted}</p>`;
       if (d.sentiment) {
         const s = d.sentiment;
         renderSentiment(s.bullish || s.positive || 55, s.neutral || 25, s.bearish || s.negative || 20);
@@ -1434,11 +1226,9 @@
   // ── SENTIMENT ─────────────────────────────────────────────────────────────
   async function loadSentiment(ticker) {
     try {
-      // Try dedicated sentiment endpoint first, fall back to defaults
       const res = await fetch(`${API}/api/stocks/quote/${ticker}`);
       if (!res.ok) throw new Error('No sentiment');
       const d = await res.json();
-      // Derive sentiment from price change
       const change = parseFloat(d.change_percent || d.dp || 0);
       const bullish = change > 2 ? 68 : change > 0 ? 55 : change > -2 ? 40 : 30;
       const bearish = change < -2 ? 45 : change < 0 ? 30 : change < 2 ? 20 : 12;
@@ -1487,7 +1277,8 @@
   function formatTime(ts) {
     if (!ts) return 'Recently';
     try {
-      const d = new Date(typeof ts === 'number' ? ts * 1000 : ts);
+      const d = new Date(typeof ts === 'number' || /^\d+$/.test(ts) ? parseInt(ts) * 1000 : ts);
+      if (isNaN(d.getTime())) return 'Recently';
       const diff = Math.floor((Date.now() - d) / 60000);
       if (diff < 60) return `${diff}m ago`;
       if (diff < 1440) return `${Math.floor(diff/60)}h ago`;
@@ -1528,8 +1319,14 @@
     input.value = '';
 
     appendChat('user', msg);
-    chatHistory.push({ role: 'user', content: msg });
 
+    const greetings = ['hi', 'hello', 'hey', 'hi aria', 'hello aria', 'hey aria', 'hi!', 'hello!', 'hey!'];
+    if (greetings.includes(msg.toLowerCase().trim())) {
+      appendChat('aria', 'Hi! How can I help you today? Ask me anything about stocks, markets, or your portfolio.');
+      return;
+    }
+
+    chatHistory.push({ role: 'user', content: msg });
     const thinking = appendChat('aria', '...');
 
     try {
@@ -1540,18 +1337,27 @@
       });
       if (!res.ok) throw new Error('Chat failed');
       const d = await res.json();
-      const reply = d.answer || d.response || d.message || d.result || 'I encountered an issue. Please try again.';
-      thinking.textContent = reply;
-      chatHistory.push({ role: 'assistant', content: reply });
+      const raw = d.answer || d.response || d.message || d.result || 'I encountered an issue. Please try again.';
+      thinking.innerHTML = formatChatText(raw);
+      chatHistory.push({ role: 'assistant', content: raw });
     } catch {
       thinking.textContent = 'Sorry, I could not connect to the backend. Please try again.';
     }
   }
 
+  function formatChatText(text) {
+    return text
+      .replace(/Key Points:/g, '<br><strong>Key Points:</strong>')
+      .replace(/Key Risks:/g, '<br><strong>Key Risks:</strong>')
+      .replace(/Actionable Takeaways:/g, '<br><strong>Actionable Takeaways:</strong>')
+      .replace(/(\d+)\.\s/g, '<br>$1. ')
+      .replace(/\n/g, '<br>');
+  }
+
   function appendChat(role, text) {
     const el = document.createElement('div');
     el.className = `chat-msg ${role}`;
-    el.textContent = text;
+    el.innerHTML = text;
     const container = document.getElementById('chat-messages');
     container.appendChild(el);
     container.scrollTop = container.scrollHeight;
@@ -1562,25 +1368,22 @@
     if (e.key === 'Enter') sendChat();
   });
 
-  // ── PAGE NAVIGATION ───────────────────────────────────────────────────────
-  function showPage(page) {
+  // ── PAGE NAVIGATION (NEW) ─────────────────────────────────────────────────
+  function showPage(page, el) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('page-' + page).classList.add('active');
-    event.currentTarget.classList.add('active');
+    el.classList.add('active');
     if (page === 'geomap') loadGeoEvents();
   }
 
-  // ── WATCHLIST ─────────────────────────────────────────────────────────────
-  let watchlist = [];
-
+  // ── WATCHLIST (NEW) ───────────────────────────────────────────────────────
   function addToWatchlist() {
     const input = document.getElementById('watchlist-input');
     const ticker = input.value.trim().toUpperCase();
     if (!ticker || watchlist.find(w => w.ticker === ticker)) { input.value = ''; return; }
     input.value = '';
-    const entry = { ticker, name: ticker, price: '...', change: 0, loading: true };
-    watchlist.push(entry);
+    watchlist.push({ ticker, name: ticker, price: '...', change: 0, loading: true });
     renderWatchlist();
     fetchWatchlistPrice(ticker);
   }
@@ -1611,24 +1414,23 @@
   function renderWatchlist() {
     const grid = document.getElementById('watchlist-grid');
     if (!watchlist.length) {
-      grid.innerHTML = '<div class="watchlist-empty">No stocks added yet. Add a ticker above to get started.</div>';
+      grid.innerHTML = '<div class="watchlist-empty">No stocks added yet. Type a ticker above to get started.</div>';
       return;
     }
     grid.innerHTML = watchlist.map(w => {
       const isPos = parseFloat(w.change) >= 0;
-      const changeColor = isPos ? 'var(--green)' : 'var(--red)';
-      return `
-        <div class="watchlist-card">
-          <button class="watchlist-remove" onclick="removeFromWatchlist('${w.ticker}')">✕</button>
-          <div class="watchlist-card-ticker">${w.ticker}</div>
-          <div class="watchlist-card-name">${w.name}</div>
-          <div class="watchlist-card-price">${w.loading ? '<span class="spinner"></span>' : '$' + w.price}</div>
-          <div class="watchlist-card-change" style="color:${changeColor}">${w.loading ? '' : (isPos ? '+' : '') + w.change + '% today'}</div>
-        </div>`;
+      const color = isPos ? 'var(--green)' : 'var(--red)';
+      return `<div class="watchlist-card">
+        <button class="watchlist-remove" onclick="removeFromWatchlist('${w.ticker}')">✕</button>
+        <div class="watchlist-card-ticker">${w.ticker}</div>
+        <div class="watchlist-card-name">${w.name}</div>
+        <div class="watchlist-card-price">${w.loading ? '<span class="spinner"></span>' : '$' + w.price}</div>
+        <div class="watchlist-card-change" style="color:${color}">${w.loading ? '' : (isPos?'+':'') + w.change + '% today'}</div>
+      </div>`;
     }).join('');
   }
 
-  // ── CALCULATOR PAGE ───────────────────────────────────────────────────────
+  // ── CALCULATOR PAGE (NEW) ─────────────────────────────────────────────────
   async function runCalcPage() {
     const ticker = document.getElementById('cp-ticker').value.trim().toUpperCase();
     const shares = parseFloat(document.getElementById('cp-shares').value) || 0;
@@ -1653,11 +1455,11 @@
         <div><div class="calc-page-label">Total Gain / Loss</div><div class="calc-result-big" style="color:${color}">${isPos?'+':''}$${Math.abs(gain).toFixed(2)} (${isPos?'+':''}${gainPct}%)</div></div>
         <div><div class="calc-page-label">Cost Basis</div><div style="font-size:14px;color:var(--text-secondary);margin-top:4px;">$${costBasis.toFixed(2)} at $${buyPrice.toFixed(2)}/share</div></div>`;
     } catch {
-      results.innerHTML = '<div class="error-msg">Could not fetch price for this ticker. Please check the symbol.</div>';
+      results.innerHTML = '<div class="error-msg">Could not fetch price. Please check the ticker symbol.</div>';
     }
   }
 
-  // ── NEWS FEED PAGE ────────────────────────────────────────────────────────
+  // ── NEWS FEED PAGE (NEW) ──────────────────────────────────────────────────
   async function searchNewsFeed() {
     const query = document.getElementById('newsfeed-input').value.trim().toUpperCase();
     if (!query) return;
@@ -1670,23 +1472,23 @@
       if (!articles.length) { list.innerHTML = '<div class="watchlist-empty">No news found for this ticker.</div>'; return; }
       list.innerHTML = articles.slice(0, 15).map(a => `
         <div class="news-item">
-          <div class="news-headline" onclick="window.open('${a.url || '#'}','_blank')">${a.title || a.headline}</div>
-          <div class="news-meta">${a.source?.name || a.source || 'Market News'} · ${formatTime(a.publishedAt || a.datetime || a.published_at)}</div>
+          <div class="news-headline" onclick="window.open('${a.url||'#'}','_blank')">${a.title||a.headline}</div>
+          <div class="news-meta">${a.source?.name||a.source||'Market News'} · ${formatTime(a.publishedAt||a.datetime||a.published_at)}</div>
         </div>`).join('');
     } catch {
       list.innerHTML = '<div class="error-msg">Could not fetch news. Please try again.</div>';
     }
   }
 
-  // ── GEOPOLITICAL MAP ──────────────────────────────────────────────────────
+  // ── GEOPOLITICAL MAP (NEW) ────────────────────────────────────────────────
   function loadGeoEvents() {
     const events = [
-      { flag: '🇮🇷', title: 'Iran-US Tensions', desc: 'Escalating conflict in the Middle East is disrupting oil supply routes and causing volatility in energy markets globally.', impact: 'high', tickers: ['XOM', 'CVX', 'USO'] },
-      { flag: '🇨🇳', title: 'US-China Trade Tariffs', desc: 'New tariff measures between the US and China are affecting tech supply chains, particularly semiconductor companies and consumer electronics manufacturers.', impact: 'high', tickers: ['AAPL', 'NVDA', 'TSM'] },
-      { flag: '🇷🇺', title: 'Russia-Ukraine War', desc: 'Ongoing conflict continues to impact European energy markets and global wheat/commodity prices, affecting inflation expectations.', impact: 'medium', tickers: ['BP', 'SHEL', 'WMT'] },
-      { flag: '🇯🇵', title: 'Bank of Japan Policy Shift', desc: 'Japan\'s central bank adjusting its yield curve control policy is causing ripple effects in global bond markets and currency pairs.', impact: 'medium', tickers: ['SONY'] },
-      { flag: '🇪🇺', title: 'European Energy Crisis', desc: 'High energy costs across Europe continue to pressure manufacturing sectors and reduce consumer spending power across the eurozone.', impact: 'low', tickers: ['SAP', 'ASML'] },
-      { flag: '🇸🇦', title: 'OPEC+ Production Cuts', desc: 'Saudi Arabia leading OPEC+ production cuts to maintain oil prices above $80/barrel, impacting energy inflation globally.', impact: 'medium', tickers: ['XOM', 'CVX', 'USO'] },
+      { flag: '🇮🇷', title: 'Iran-US Tensions', desc: 'Escalating conflict in the Middle East is disrupting oil supply routes and causing volatility in energy markets globally.', impact: 'high', tickers: ['XOM','CVX','USO'] },
+      { flag: '🇨🇳', title: 'US-China Trade Tariffs', desc: 'New tariff measures between the US and China are affecting tech supply chains, particularly semiconductor and consumer electronics companies.', impact: 'high', tickers: ['AAPL','NVDA','TSM'] },
+      { flag: '🇷🇺', title: 'Russia-Ukraine War', desc: 'Ongoing conflict continues to impact European energy markets and global commodity prices, affecting inflation expectations.', impact: 'medium', tickers: ['BP','SHEL'] },
+      { flag: '🇯🇵', title: 'Bank of Japan Policy Shift', desc: 'Japan adjusting its yield curve control policy is causing ripple effects in global bond markets and currency pairs.', impact: 'medium', tickers: ['SONY'] },
+      { flag: '🇪🇺', title: 'European Energy Crisis', desc: 'High energy costs across Europe continue to pressure manufacturing sectors and reduce consumer spending across the eurozone.', impact: 'low', tickers: ['SAP','ASML'] },
+      { flag: '🇸🇦', title: 'OPEC+ Production Cuts', desc: 'Saudi Arabia leading OPEC+ cuts to maintain oil prices above $80/barrel, impacting energy inflation globally.', impact: 'medium', tickers: ['XOM','CVX','USO'] },
     ];
     document.getElementById('geo-events-list').innerHTML = events.map(e => `
       <div class="geo-event">
@@ -1696,15 +1498,13 @@
           <div class="geo-event-desc">${e.desc}</div>
           <div style="margin-top:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
             <span class="geo-impact ${e.impact}">${e.impact.toUpperCase()} IMPACT</span>
-            ${e.tickers.map(t => `<span class="log-ticker" style="cursor:pointer;" onclick="document.getElementById('topbar-input').value='What is happening with ${t}?';">${t}</span>`).join('')}
+            ${e.tickers.map(t=>`<span class="log-ticker">${t}</span>`).join('')}
           </div>
         </div>
       </div>`).join('');
   }
 
-  // ── AGENT LOG ─────────────────────────────────────────────────────────────
-  let agentLog = [];
-
+  // ── AGENT LOG (NEW) ───────────────────────────────────────────────────────
   function addToLog(query, ticker) {
     agentLog.unshift({ query, ticker, time: new Date().toLocaleTimeString() });
     const list = document.getElementById('agent-log-list');
@@ -1717,8 +1517,6 @@
         <div class="log-meta">${l.time}</div>
       </div>`).join('');
   }
-
-  
 </script>
 </body>
 </html>
