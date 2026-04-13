@@ -1154,7 +1154,8 @@
   function formatTime(ts) {
     if (!ts) return 'Recently';
     try {
-      const d = new Date(typeof ts === 'number' ? ts * 1000 : ts);
+      const d = new Date(typeof ts === 'number' || /^\d+$/.test(ts) ? parseInt(ts) * 1000 : ts);
+      if (isNaN(d.getTime())) return 'Recently';
       const diff = Math.floor((Date.now() - d) / 60000);
       if (diff < 60) return `${diff}m ago`;
       if (diff < 1440) return `${Math.floor(diff/60)}h ago`;
