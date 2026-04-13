@@ -51,7 +51,7 @@ class NewsService:
                 "description": a.get("summary", ""),
                 "url": a.get("url", ""),
                 "source": {"name": a.get("source", "Finnhub")},
-                "publishedAt": a.get("datetime", ""),
+                "publishedAt": str(a.get("datetime", "")),
             }
             for a in articles[:page_size]
             if a.get("headline")
