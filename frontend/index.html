@@ -1059,15 +1059,11 @@
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('chat-float').style.display = 'flex';
     document.getElementById('topbar-input').value = query;
-
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-dashboard').classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.querySelector('.nav-item').classList.add('active');
-
     animatePipeline();
-
-    // Extract meaningful words from query and search Finnhub
     let ticker = 'AAPL';
     try {
       const stopwords = ['should','invest','i','in','right','now','what','happened','to','today','is','buy','sell','good','bad','about','how','are','the','a','an','my','me','tell','think','will'];
@@ -1081,13 +1077,34 @@
         ticker = best.symbol;
       }
     } catch {}
-
     currentTicker = ticker;
     loadStock(ticker);
     loadBriefing(query, ticker);
     loadSentiment(ticker);
     loadNews(ticker);
     addToLog(query, ticker);
+  }
+
+  async function reanalyze() {
+    const q = document.getElementById('topbar-input').value.trim();
+    if (!q) return;
+    resetDashboard();
+    await showDashboard(q);
+  }
+
+  function resetDashboard() {
+    document.getElementById('ticker-symbol').textContent = '—';
+    document.getElementById('ticker-name').textContent = 'Loading...';
+    document.getElementById('ticker-price').textContent = '—';
+    document.getElementById('ticker-change').textContent = '—';
+    document.getElementById('ticker-change').className = 'ticker-change';
+    ['metric-cap','metric-sector','metric-range','metric-risk'].forEach(id => {
+      document.getElementById(id).innerHTML = '<span class="spinner"></span>';
+    });
+    document.getElementById('briefing-content').innerHTML = '<div class="loading-state"><span class="spinner"></span> ARIA is analyzing...</div>';
+    document.getElementById('sentiment-bars').innerHTML = '<div class="loading-state"><span class="spinner"></span></div>';
+    document.getElementById('news-list').innerHTML = '<div class="loading-state"><span class="spinner"></span> Fetching news...</div>';
+    currentPrice = 0;
   }
 
   // ── PIPELINE ANIMATION ────────────────────────────────────────────────────
