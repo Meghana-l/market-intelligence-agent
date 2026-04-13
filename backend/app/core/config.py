@@ -17,7 +17,6 @@ class Settings(BaseSettings):
     pinecone_namespace: str = "default"
     finnhub_api_key: str = ""
     newsapi_key: str = Field(default="", validation_alias="NEWS_API_KEY")
-    twelvedata_api_key: str = Field(default="", validation_alias="TWELVEDATA_API_KEY")
     top_k_vector: int = 20
     top_k_bm25: int = 20
     final_top_k: int = 8
