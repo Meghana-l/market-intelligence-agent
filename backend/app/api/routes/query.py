@@ -1,23 +1,17 @@
 from fastapi import APIRouter
-from app.models.schemas import QueryRequest, QueryResponse
+from app.models.schemas import QueryRequest, QueryResponse, DocumentChunk
 from app.services.groq_agent import GroqAgentService
-from app.services.rag import RagPipeline
 from app.services.news_service import NewsService
-from app.services.market_data import MarketDataService
-from app.models.schemas import DocumentChunk
 
 router = APIRouter()
-rag = RagPipeline()
 agent = GroqAgentService()
 news_service = NewsService()
-market_data = MarketDataService()
 
 @router.post("", response_model=QueryResponse)
 def ask_aria(request: QueryRequest) -> QueryResponse:
-    # 1. Get ticker from request
     ticker = request.tickers[0] if request.tickers else (request.filters.ticker or "")
 
-    # 2. Fetch live news for this ticker
+    # Fetch live news
     live_news = []
     if ticker:
         try:
@@ -34,17 +28,16 @@ def ask_aria(request: QueryRequest) -> QueryResponse:
         except Exception as e:
             print(f"News fetch error: {e}")
 
-    # 3. Get RAG chunks from Pinecone (company context)
+    # Try RAG
     rag_chunks = []
     try:
+        from app.services.rag import RagPipeline
+        rag = RagPipeline()
         rag_chunks = rag.retrieve(request)
     except Exception as e:
-        print(f"RAG error: {e}")
+        print(f"RAG error (skipping): {e}")
 
-    # 4. Combine live news + RAG context
     all_chunks = live_news + rag_chunks
-
-    # 5. If no chunks at all, still answer using Groq with just the question
     answer = agent.answer_question(request.question, all_chunks)
     citations = [chunk.id for chunk in all_chunks]
 
