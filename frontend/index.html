@@ -1054,14 +1054,11 @@
   }
 
 // ── SHOW DASHBOARD ────────────────────────────────────────────────────────
-  function showDashboard(query) {
+  async function showDashboard(query) {
     document.getElementById('landing').style.display = 'none';
     document.getElementById('dashboard').style.display = 'block';
     document.getElementById('chat-float').style.display = 'flex';
     document.getElementById('topbar-input').value = query;
-
-    const ticker = extractTicker(query);
-    currentTicker = ticker;
 
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-dashboard').classList.add('active');
@@ -1069,55 +1066,28 @@
     document.querySelector('.nav-item').classList.add('active');
 
     animatePipeline();
+
+    // Extract meaningful words from query and search Finnhub
+    let ticker = 'AAPL';
+    try {
+      const stopwords = ['should','invest','i','in','right','now','what','happened','to','today','is','buy','sell','good','bad','about','how','are','the','a','an','my','me','tell','think','will'];
+      const words = query.toLowerCase().replace(/[^a-z ]/g, '').split(' ')
+        .filter(w => w.length > 1 && !stopwords.includes(w));
+      const searchTerm = words.slice(0, 3).join(' ');
+      const res = await fetch(`${API}/api/stocks/search?q=${encodeURIComponent(searchTerm)}`);
+      const d = await res.json();
+      if (d.result && d.result.length > 0) {
+        const best = d.result.find(r => r.type === 'Common Stock' && !r.symbol.includes('.')) || d.result[0];
+        ticker = best.symbol;
+      }
+    } catch {}
+
+    currentTicker = ticker;
     loadStock(ticker);
     loadBriefing(query, ticker);
     loadSentiment(ticker);
     loadNews(ticker);
     addToLog(query, ticker);
-  }
-
-  function reanalyze() {
-    const q = document.getElementById('topbar-input').value.trim();
-    if (!q) return;
-    resetDashboard();
-    showDashboard(q);
-  }
-
-  function resetDashboard() {
-    document.getElementById('ticker-symbol').textContent = '—';
-    document.getElementById('ticker-name').textContent = 'Loading...';
-    document.getElementById('ticker-price').textContent = '—';
-    document.getElementById('ticker-change').textContent = '—';
-    document.getElementById('ticker-change').className = 'ticker-change';
-    ['metric-cap','metric-sector','metric-range','metric-risk'].forEach(id => {
-      document.getElementById(id).innerHTML = '<span class="spinner"></span>';
-    });
-    document.getElementById('briefing-content').innerHTML = '<div class="loading-state"><span class="spinner"></span> ARIA is analyzing...</div>';
-    document.getElementById('sentiment-bars').innerHTML = '<div class="loading-state"><span class="spinner"></span></div>';
-    document.getElementById('news-list').innerHTML = '<div class="loading-state"><span class="spinner"></span> Fetching news...</div>';
-    currentPrice = 0;
-  }
-
-  // ── TICKER EXTRACTION ─────────────────────────────────────────────────────
-  function extractTicker(query) {
-    const map = {
-      tesla: 'TSLA', tsla: 'TSLA',
-      nvidia: 'NVDA', nvda: 'NVDA',
-      apple: 'AAPL', aapl: 'AAPL',
-      microsoft: 'MSFT', msft: 'MSFT',
-      google: 'GOOGL', alphabet: 'GOOGL', googl: 'GOOGL',
-      amazon: 'AMZN', amzn: 'AMZN',
-      meta: 'META', facebook: 'META',
-      netflix: 'NFLX', nflx: 'NFLX',
-      amd: 'AMD', intel: 'INTC', intc: 'INTC',
-      sp500: 'SPY', oil: 'USO',
-    };
-    const lower = query.toLowerCase();
-    for (const [k, v] of Object.entries(map)) {
-      if (lower.includes(k)) return v;
-    }
-    const match = query.match(/\b([A-Z]{1,5})\b/);
-    return match ? match[1] : 'AAPL';
   }
 
   // ── PIPELINE ANIMATION ────────────────────────────────────────────────────
