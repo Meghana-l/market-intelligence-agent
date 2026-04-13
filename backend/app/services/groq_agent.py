@@ -1,8 +1,6 @@
 from groq import Groq
-
 from app.core.config import settings
 from app.models.schemas import DocumentChunk
-
 
 class GroqAgentService:
     def __init__(self) -> None:
@@ -11,7 +9,7 @@ class GroqAgentService:
 
     def answer_question(self, question: str, chunks: list[DocumentChunk]) -> str:
         context = "\n\n".join(f"[{idx + 1}] {chunk.text}" for idx, chunk in enumerate(chunks))
-         prompt = (
+        prompt = (
             "You are ARIA, a stock market intelligence assistant. Use the evidence context to provide clear "
             "analysis, key risks, and actionable takeaways.\n"
             "Format your response like this:\n"
@@ -23,7 +21,6 @@ class GroqAgentService:
             f"Question: {question}\n\n"
             f"Context:\n{context}"
         )
-
         completion = self.client.chat.completions.create(
             model=self.model,
             messages=[{"role": "user", "content": prompt}],
