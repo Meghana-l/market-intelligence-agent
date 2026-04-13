@@ -913,8 +913,7 @@
 </div>
 
 <script>
-  const API = (window.VITE_API_BASE_URL || '').replace(/\/$/, '')
-    || 'https://market-intelligence-agent-production.up.railway.app';
+  const API = 'https://market-intelligence-agent-ko69.onrender.com';
 
   let currentTicker = '';
   let currentPrice = 0;
@@ -1077,7 +1076,7 @@
       const res = await fetch(`${API}/api/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, ticker, filters: {} })
+        body: JSON.stringify({ question: query, tickers: [ticker], filters: {} })
       });
       if (!res.ok) throw new Error('Query failed');
       const d = await res.json();
@@ -1136,7 +1135,7 @@
       const res = await fetch(`${API}/api/stocks/news/${ticker}`);
       if (!res.ok) throw new Error('News failed');
       const d = await res.json();
-      const articles = d.articles || d.news || d.results || [];
+      const articles = Array.isArray(d) ? d : (d.articles || d.news || d.results || []);
       if (!articles.length) throw new Error('No articles');
       document.getElementById('news-list').innerHTML = articles.slice(0, 6).map(a => `
         <div class="news-item">
@@ -1201,7 +1200,7 @@
       const res = await fetch(`${API}/api/query`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: msg, ticker: currentTicker, filters: {} })
+        body: JSON.stringify({ question: msg, tickers: [currentTicker], filters: {} })
       });
       if (!res.ok) throw new Error('Chat failed');
       const d = await res.json();
