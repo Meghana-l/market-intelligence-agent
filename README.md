@@ -1,6 +1,6 @@
 # ARIA — Autonomous Research & Intelligence Agent
 
-> **Live Demo:** [market-intelligence-agent-aria.vercel.app](https://market-intelligence-agent-aria.vercel.app/)
+> **Live:** [market-intelligence-agent-aria.vercel.app](https://market-intelligence-agent-aria.vercel.app/)
 
 ARIA is an AI-powered stock market intelligence web app. Ask any question about the market in plain English — ARIA fetches live data, retrieves relevant context using RAG, and delivers a structured analysis with real-time prices, news, sentiment, and an investment calculator.
 
