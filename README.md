@@ -9,6 +9,7 @@ ARIA is an AI-powered stock market intelligence web app. Ask any question about 
 ### Landing Page
 
 <img width="915" height="592" alt="Screenshot 2026-04-13 205148" src="https://github.com/user-attachments/assets/05329cc4-80f7-4f0a-92e9-b0c4a83273fe" />
+
 *Ask ARIA anything about the market — natural language search with example prompts*
 
 ---
@@ -17,6 +18,7 @@ ARIA is an AI-powered stock market intelligence web app. Ask any question about 
 
 <img width="1886" height="881" alt="Screenshot 2026-04-13 205248" src="https://github.com/user-attachments/assets/fbfa864e-a8b1-45e2-90aa-2465ba91151e" />
 <img width="1874" height="702" alt="Screenshot 2026-04-13 205330" src="https://github.com/user-attachments/assets/62987ed3-cfb6-46ac-a8a6-38bc8d71912c" />
+
 *Live stock data, ARIA's AI analysis, investment calculator, market mood, and news — all in one view*
 
 - Live stock price, % change, market cap, sector, 52-week range, risk score
@@ -31,6 +33,7 @@ ARIA is an AI-powered stock market intelligence web app. Ask any question about 
 ### Chat with ARIA
 
 <img width="366" height="496" alt="Screenshot 2026-04-13 205541" src="https://github.com/user-attachments/assets/4bf8e840-4ef2-4332-92eb-a668616e0ea4" />
+
 *Conversational AI — ask follow-up questions about any stock or market event in real time*
 
 ---
@@ -38,7 +41,9 @@ ARIA is an AI-powered stock market intelligence web app. Ask any question about 
 ### My Watchlist
 
 <img width="1919" height="902" alt="Screenshot 2026-04-13 210221" src="https://github.com/user-attachments/assets/30e9c8ab-b816-4bde-8f88-e96e1404611c" />
+
 *Track multiple stocks with live prices and percentage change for the session*
+
 - Add any ticker and track live prices for the session
 - See real-time price and % change for all your stocks at once
 
@@ -47,6 +52,7 @@ ARIA is an AI-powered stock market intelligence web app. Ask any question about 
 ### News Feed
 
 <img width="1754" height="771" alt="Screenshot 2026-04-13 210313" src="https://github.com/user-attachments/assets/0d21eb93-5af8-491a-a765-f048419c5eab" />
+
 *Search the latest market news for any ticker — powered by Finnhub and NewsAPI*
 
 - Search latest news for any ticker
@@ -57,6 +63,8 @@ ARIA is an AI-powered stock market intelligence web app. Ask any question about 
 ### Geopolitical Map
 
 <img width="1917" height="919" alt="Screenshot 2026-04-13 210355" src="https://github.com/user-attachments/assets/46d916c3-9fb9-4722-90f0-d2b321403925" />
+
+
 *Global events affecting financial markets with HIGH / MEDIUM / LOW market impact ratings*
 - Global events affecting financial markets with HIGH/MEDIUM/LOW impact ratings
 - Linked to relevant tickers affected by each event
