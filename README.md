@@ -6,8 +6,6 @@ ARIA is an AI-powered stock market intelligence web app. Ask any question about 
 
 ---
 
-## Screenshots
-
 ### Landing Page
 
 <img width="915" height="592" alt="Screenshot 2026-04-13 205148" src="https://github.com/user-attachments/assets/05329cc4-80f7-4f0a-92e9-b0c4a83273fe" />
