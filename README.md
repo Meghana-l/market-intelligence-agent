@@ -66,14 +66,9 @@ ARIA is an AI-powered stock market intelligence web app. Ask any question about 
 
 
 *Global events affecting financial markets with HIGH / MEDIUM / LOW market impact ratings*
+
 - Global events affecting financial markets with HIGH/MEDIUM/LOW impact ratings
 - Linked to relevant tickers affected by each event
-
-
----
-
-### Architecture Diagram
-<img width="773" height="740" alt="Screenshot 2026-04-13 210843" src="https://github.com/user-attachments/assets/93c59108-de8b-4e68-ad52-3db341129eb3" />
 
 ---
 
