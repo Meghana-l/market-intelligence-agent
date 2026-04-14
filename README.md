@@ -123,6 +123,31 @@ Type a question like *"Should I invest in NVDA right now?"* and ARIA:
 
 ---
 
+## n8n Automation Pipeline
+
+ARIA uses n8n to automatically populate Pinecone with fresh market news every 6 hours.
+
+<img width="760" height="330" alt="n8n" src="https://github.com/user-attachments/assets/8293ee6b-54ae-4c6d-9244-85f8eaf43230" />
+
+**How it works:**
+
+| Step | Node | What it does |
+|---|---|---|
+| 1 | Schedule Trigger | Fires every 6 hours automatically |
+| 2 | Set Tickers | Loops through 10 major tickers (AAPL, NVDA, TSLA, MSFT, GOOGL, AMZN, META, NFLX, AMD, JPM) |
+| 3 | Fetch News | Calls NewsAPI — 5 articles per ticker (~50 total) |
+| 4 | Extract Articles | Filters and formats articles for embedding |
+| 5 | Embed Text | HuggingFace all-MiniLM-L6-v2 — generates 384-dim vectors |
+| 6 | Build Vector Record | Structures id, values, and metadata for Pinecone |
+| 7 | Upsert to Pinecone | Writes vectors to aria-market-intelligence index |
+| 8 | Log Result | Confirms successful upsert |
+
+<img width="1605" height="179" alt="pipeline" src="https://github.com/user-attachments/assets/649fafe3-3605-4fb0-91a9-f6d4910b98c0" />
+
+This keeps ARIA's RAG pipeline stocked with real context so her analysis improves over time.
+
+---
+
 ## RAG Concepts Used
 
 **Hybrid Search (BM25 + Vector Embeddings)**
